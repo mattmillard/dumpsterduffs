@@ -12,7 +12,7 @@ export default function SizeOverview() {
       "Estate cleanouts",
     ],
     weight: "Up to 2 tons included",
-    price: "$299",
+    price: "$325 + $5/day",
   };
 
   return (

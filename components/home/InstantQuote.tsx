@@ -143,9 +143,9 @@ export default function InstantQuote() {
                     </p>
                     <div className="flex items-baseline gap-2 mb-4">
                       <span className="text-4xl font-bold text-primary">
-                        $299
+                        $325
                       </span>
-                      <span className="text-[#808080]">for up to 7 days</span>
+                      <span className="text-[#808080]">+ $5/day</span>
                     </div>
                     <p className="text-sm text-[#808080] mb-4">
                       ✓ Includes delivery, pickup, and disposal

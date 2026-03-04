@@ -3,7 +3,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Dumpster Sizes & Pricing | Dumpster Duff's",
   description:
-    "Transparent dumpster rental pricing in Missouri. Our 15-yard dumpster starts at $299 with no hidden fees. Same-day delivery available.",
+    "Transparent dumpster rental pricing in Missouri. Our 15-yard dumpster is $325 delivery + $5/day with no hidden fees. Same-day delivery available.",
 };
 
 export default function SizesPricing() {
@@ -56,15 +56,24 @@ export default function SizesPricing() {
 
               <div className="flex flex-col justify-center">
                 <div className="mb-8">
-                  <p className="text-white/70 mb-2">Starting Price</p>
+                  <p className="text-white/70 mb-2">Pricing Breakdown</p>
                   <div className="mb-4">
-                    <span className="text-6xl font-bold text-primary">
-                      $299
-                    </span>
-                    <span className="text-white/70 ml-2">for 7 days</span>
+                    <div className="mb-2">
+                      <span className="text-4xl font-bold text-primary">
+                        $325
+                      </span>
+                      <span className="text-white/70 ml-2">delivery fee</span>
+                    </div>
+                    <div>
+                      <span className="text-4xl font-bold text-primary">
+                        $5
+                      </span>
+                      <span className="text-white/70 ml-2">per day</span>
+                    </div>
                   </div>
                   <p className="text-sm text-white/60 mb-4">
-                    ✓ Includes delivery, pickup, and disposal
+                    ✓ Up to 2 tons included
+                    <br />✓ $75 per ton over 2 tons
                     <br />✓ Same-day delivery available
                     <br />✓ No hidden fees
                   </p>

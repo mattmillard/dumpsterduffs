@@ -3,7 +3,7 @@ export default function FAQTeaser() {
     {
       question: "How much does a dumpster rental cost in Missouri?",
       answer:
-        "Our 15-yard dumpster rental starts at $299 for up to 7 days. This includes delivery, pickup, disposal (up to 2 tons), and all fees. No hidden charges. Need longer? Extended rentals available.",
+        "Our 15-yard dumpster rental is $325 delivery + $5 per day. This includes up to 2 tons of disposal. Each additional ton is $75. No hidden fees—transparent pricing, every time.",
       schema: true,
     },
     {

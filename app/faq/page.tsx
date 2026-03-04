@@ -13,7 +13,7 @@ export default function FAQ() {
       faqs: [
         {
           q: "How much does a dumpster rental cost?",
-          a: "Our 15-yard dumpster rental starts at $299 for 7 days. This includes delivery, pickup, and disposal (up to 2 tons). No hidden fees.",
+          a: "Our 15-yard dumpster rental is $325 delivery + $5 per day. This includes up to 2 tons of disposal. Each additional ton over 2 tons is $75. Completely transparent pricing.",
         },
         {
           q: "Are there any hidden fees?",

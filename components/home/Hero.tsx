@@ -28,7 +28,7 @@ export default function Hero() {
 
             <p className="text-xl md:text-2xl text-[#999999] mb-8 text-balance">
               When you&apos;re ready to get rid of some junk and stuff, call
-              Duff! <strong>From $299</strong> with no hidden fees.
+              Duff! <strong>$325 delivery + $5/day</strong> with no hidden fees.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
@@ -143,8 +143,9 @@ export default function Hero() {
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-[#999999]">Starting at</p>
-                    <p className="text-3xl font-bold text-primary">$299</p>
+                    <p className="text-sm text-[#999999]">From</p>
+                    <p className="text-3xl font-bold text-primary">$325</p>
+                    <p className="text-xs text-[#808080]">+ $5/day</p>
                   </div>
                 </div>
               </div>
