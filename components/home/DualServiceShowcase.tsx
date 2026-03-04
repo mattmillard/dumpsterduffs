@@ -197,7 +197,7 @@ export default function DualServiceShowcase() {
                 Custom quote based on volume
               </p>
               <p className="text-2xl font-bold text-white">
-                Call <span className="text-primary">(573) 356-4272</span>
+                Call <a href="tel:+15733564272" className="text-primary hover:underline">(573) 356-4272</a>
               </p>
             </div>
 

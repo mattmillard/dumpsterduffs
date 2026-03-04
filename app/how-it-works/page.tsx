@@ -12,7 +12,7 @@ export default function HowItWorks() {
       number: "1",
       title: "Book Online or Call",
       description:
-        "Fill out our quick online form or call us at (573) 356-4272. Takes less than 5 minutes. Tell us your project details and preferred delivery date.",
+        "Fill out our quick online form or call us at <a href='tel:+15733564272' class='text-primary hover:underline'>(573) 356-4272</a>. Takes less than 5 minutes. Tell us your project details and preferred delivery date.",
       details: [
         "Choose your rental period (standard: 7 days)",
         "Tell us about your project",
@@ -152,7 +152,7 @@ export default function HowItWorks() {
               {[
                 {
                   q: "How do I book?",
-                  a: "You can book online using our form above, or call us at (573) 356-4272. Both methods take just a few minutes.",
+                  a: "You can book online using our form above, or call us at <a href='tel:+15733564272' class='text-primary hover:underline'>(573) 356-4272</a>. Both methods take just a few minutes.",
                 },
                 {
                   q: "What if I need delivery on a specific date?",
@@ -164,7 +164,7 @@ export default function HowItWorks() {
                 },
                 {
                   q: "Can I call instead of booking online?",
-                  a: "Absolutely! Call (573) 356-4272 and our team will book you right over the phone.",
+                  a: "Absolutely! Call <a href='tel:+15733564272' class='text-primary hover:underline'>(573) 356-4272</a> and our team will book you right over the phone.",
                 },
               ].map((faq, idx) => (
                 <details

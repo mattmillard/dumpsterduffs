@@ -21,7 +21,7 @@ export default function FAQTeaser() {
     {
       question: "Do you offer professional junk removal?",
       answer:
-        "Yes! We have licensed, insured crews that handle estate cleanouts, basement removals, storm debris, and bulk hauling. We load, haul, and dispose—no lifting required. Call (573) 356-4272 for a free quote.",
+        "Yes! We have licensed, insured crews that handle estate cleanouts, basement removals, storm debris, and bulk hauling. We load, haul, and dispose—no lifting required. Call <a href='tel:+15733564272' class='text-primary hover:underline'>(573) 356-4272</a> for a free quote.",
       schema: true,
     },
     {

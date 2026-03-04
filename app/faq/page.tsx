@@ -25,7 +25,7 @@ export default function FAQ() {
         },
         {
           q: "How do I book?",
-          a: "Book online using our form or call (573) 356-4272. Both methods take just a few minutes.",
+          a: "Book online using our form or call <a href='tel:+15733564272' class='text-primary hover:underline'>(573) 356-4272</a>. Both methods take just a few minutes.",
         },
       ],
     },
@@ -80,7 +80,7 @@ export default function FAQ() {
         },
         {
           q: "How does junk removal pricing work?",
-          a: "Junk removal is priced based on volume and weight. Call (573) 356-4272 for a free quote, or describe what you need removed and we'll give you a price.",
+          a: "Junk removal is priced based on volume and weight. Call <a href='tel:+15733564272' class='text-primary hover:underline'>(573) 356-4272</a> for a free quote, or describe what you need removed and we'll give you a price.",
         },
         {
           q: "What can you remove?",
@@ -109,7 +109,7 @@ export default function FAQ() {
         },
         {
           q: "What if I'm unsure which option is right?",
-          a: "Call us! We'll ask about your project, volume, and timeline, then recommend the best (and most cost-effective) solution. No pressure, just honest guidance. (573) 356-4272",
+          a: "Call us! We'll ask about your project, volume, and timeline, then recommend the best (and most cost-effective) solution. No pressure, just honest guidance. <a href='tel:+15733564272' class='text-primary hover:underline'>(573) 356-4272</a>",
         },
         {
           q: "Can you remove items from a rental dumpster?",
