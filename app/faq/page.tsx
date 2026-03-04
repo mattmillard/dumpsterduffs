@@ -46,7 +46,7 @@ export default function FAQ() {
         },
         {
           q: "Can I change my pickup date?",
-          a: "Yes! Just call us before your scheduled pickup, and we can reschedule at no additional cost.",
+          a: "Yes! Call us before your scheduled pickup to reschedule. Moving to a later date may increase your daily rental cost since you'll keep the dumpster longer.",
         },
       ],
     },

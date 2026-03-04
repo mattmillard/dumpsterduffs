@@ -24,7 +24,7 @@ export default function Footer() {
             </p>
             <div className="flex gap-4 mt-4">
               <span className="trust-badge bg-[#262626] text-white border border-[#404040]">
-                🇺🇸 Veteran Owned
+                🇺🇸 US Veteran Owned
               </span>
             </div>
           </div>
@@ -150,7 +150,7 @@ export default function Footer() {
                   href="https://facebook.com/587799054419870"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark rounded-lg transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded-lg transition-colors"
                 >
                   <svg
                     className="w-5 h-5"
