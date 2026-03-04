@@ -15,11 +15,7 @@ export default function Header() {
             href="/"
             className="flex items-center gap-3 hover:opacity-80 transition-opacity"
           >
-            <img
-              src="/logo.png"
-              alt="Dumpster Duff's"
-              className="w-12 h-12"
-            />
+            <img src="/logo.png" alt="Dumpster Duff's" className="w-12 h-12" />
             <div className="flex flex-col">
               <span className="font-bold text-xl text-primary leading-none">
                 Dumpster Duff&apos;s
