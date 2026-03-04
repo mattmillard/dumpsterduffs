@@ -3,7 +3,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Dumpster Sizes & Pricing | Dumpster Duff's",
   description:
-    "Transparent dumpster rental pricing in Missouri. Our 15-yard dumpster is $325 delivery + $5/day with no hidden fees. Same-day delivery available.",
+    "Transparent dumpster rental pricing in Missouri. Our 15-yard dumpster is $325 delivery + $5/day with no hidden fees. Same-day delivery in Columbia.",
 };
 
 export default function SizesPricing() {
@@ -31,12 +31,6 @@ export default function SizesPricing() {
                     <p className="text-white/70 mb-1">Dimensions</p>
                     <p className="text-lg font-semibold text-white">
                       16&apos; L × 8&apos; W × 4&apos; H
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-white/70 mb-1">Capacity</p>
-                    <p className="text-lg font-semibold text-white">
-                      ~4.5 pickup truck loads
                     </p>
                   </div>
                   <div>
@@ -74,7 +68,7 @@ export default function SizesPricing() {
                   <p className="text-sm text-white/60 mb-4">
                     ✓ Up to 2 tons included
                     <br />✓ $75 per ton over 2 tons
-                    <br />✓ Same-day delivery available
+                    <br />✓ Same-day delivery in Columbia
                     <br />✓ No hidden fees
                   </p>
                 </div>
@@ -93,13 +87,13 @@ export default function SizesPricing() {
             <div className="grid md:grid-cols-2 gap-6">
               {[
                 "Delivery to your location",
-                "Pickup when you&apos;re done",
+                "Pickup when you're done",
                 "Disposal of contents",
                 "Up to 2 tons weight included",
                 "Flexible rental periods",
-                "Same-day delivery available",
+                "Same-day delivery in Columbia",
                 "Professional, courteous service",
-                "Optional loading service ($149)",
+                "Optional loading service (starting at $149)",
               ].map((item, idx) => (
                 <div
                   key={idx}
@@ -180,7 +174,7 @@ export default function SizesPricing() {
               Ready to book your dumpster?
             </h3>
             <p className="text-white/70 mb-6">
-              Same-day delivery available in most areas of central Missouri.
+              Same-day delivery in Columbia. Other areas may also qualify—call to confirm.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="#book-now" className="btn-primary">

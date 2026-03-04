@@ -28,7 +28,7 @@ export default function ServiceAreas() {
           </h2>
           <p className="text-lg text-[#999999] max-w-2xl mx-auto">
             Local, veteran-owned, and committed to our communities. Same-day
-            delivery available in most service areas.
+            delivery in Columbia.
           </p>
         </div>
 
@@ -66,9 +66,11 @@ export default function ServiceAreas() {
                     <h3 className="text-xl font-bold text-white">
                       {area.city}
                     </h3>
-                    <p className="text-sm text-primary font-semibold">
-                      ✓ Same-day delivery available
-                    </p>
+                    {area.city === "Columbia" && (
+                      <p className="text-sm text-primary font-semibold">
+                        ✓ Same-day delivery
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

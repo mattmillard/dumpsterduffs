@@ -83,7 +83,7 @@ export default function FinalCTA() {
             <span>•</span>
             <span>🇺🇸 Veteran Owned</span>
             <span>•</span>
-            <span>Same-Day Delivery</span>
+            <span>Same-Day Delivery (Columbia)</span>
             <span>•</span>
             <span>No Hidden Fees</span>
           </div>

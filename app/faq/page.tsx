@@ -34,7 +34,7 @@ export default function FAQ() {
       faqs: [
         {
           q: "Is same-day delivery available?",
-          a: "Yes! Same-day delivery is available for most orders in our service area. Delivery usually happens within 2-4 hours.",
+          a: "Same-day delivery is available in Columbia. Other service areas may also qualify for same-day delivery depending on demand and scheduling—call us to confirm availability.",
         },
         {
           q: "What if I need delivery on a specific date?",
@@ -42,7 +42,7 @@ export default function FAQ() {
         },
         {
           q: "What are your service areas?",
-          a: "We serve Columbia, Jefferson City, Fulton, Moberly, and surrounding areas in central Missouri. View our full service area list.",
+          a: "We serve Columbia, Jefferson City, Fulton, Moberly, and surrounding areas in central Missouri. <a href='/service-areas' class='text-primary hover:underline'>View our full service area list</a>.",
         },
         {
           q: "Can I change my pickup date?",
@@ -101,7 +101,7 @@ export default function FAQ() {
       faqs: [
         {
           q: "Should I rent a dumpster or use junk removal?",
-          a: "Use dumpster rental if YOU'LL be loading (remodeling, landscaping, DIY projects). Use professional junk removal if you want US to handle everything (cleanouts, estates, bulk hauling). Many customers use both for different projects!",
+          a: "Use dumpster rental if YOU'LL be loading (remodeling, landscaping, home projects). Use professional junk removal if you want US to handle everything (cleanouts, estates, bulk hauling). Many customers use both for different projects!",
         },
         {
           q: "Can I compare costs?",
@@ -113,7 +113,7 @@ export default function FAQ() {
         },
         {
           q: "Can you remove items from a rental dumpster?",
-          a: "Yes! If you want to rent a dumpster but need help loading it, ask about our professional loading service ($149).",
+          a: "Yes! If you want to rent a dumpster but need help loading it, ask about our professional loading service (starting at $149, price depends on the size of the job).",
         },
       ],
     },
@@ -182,7 +182,7 @@ export default function FAQ() {
                           />
                         </svg>
                       </summary>
-                      <p className="mt-4 text-white/80">{faq.a}</p>
+                      <p className="mt-4 text-white/80" dangerouslySetInnerHTML={{ __html: faq.a }}></p>
                     </details>
                   ))}
                 </div>

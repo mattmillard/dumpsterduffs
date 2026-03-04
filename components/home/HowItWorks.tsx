@@ -25,7 +25,7 @@ export default function HowItWorks() {
       number: "2",
       title: "We Deliver Fast",
       description:
-        "We'll drop off your dumpster at your requested time. Same-day delivery available for most orders. We'll place it exactly where you want it.",
+        "We'll drop off your dumpster at your requested time. Same-day delivery in Columbia. We'll place it exactly where you want it.",
       icon: (
         <svg
           className="w-12 h-12"

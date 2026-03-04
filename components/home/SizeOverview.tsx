@@ -2,7 +2,6 @@ export default function SizeOverview() {
   const dumpsterInfo = {
     size: "15 Yard",
     dimensions: "16' L × 8' W × 4' H",
-    capacity: "~4.5 pickup truck loads",
     idealFor: [
       "Kitchen or bathroom remodels",
       "Garage or attic cleanouts",
@@ -47,15 +46,6 @@ export default function SizeOverview() {
                       <div className="h-3 bg-[#404040] rounded"></div>
                       <div className="h-3 bg-[#404040] rounded w-3/4"></div>
                     </div>
-                  </div>
-                  {/* Scale Reference */}
-                  <div className="mt-4 text-center">
-                    <p className="text-sm text-[#999999] font-semibold">
-                      Visual scale reference
-                    </p>
-                    <p className="text-xs text-[#666666] mt-1">
-                      About the size of 4-5 pickup truck loads
-                    </p>
                   </div>
                 </div>
 

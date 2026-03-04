@@ -27,12 +27,12 @@ export default function Hero() {
             </h1>
             
             <p className="text-lg md:text-xl text-[#999999] mb-8 text-balance">
-              Junk removal & dumpster rentals in Missouri. DIY or done-for-you—we handle it your way.
+              Junk removal & dumpster rentals in Missouri. We handle it your way.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
               <div>
-                <p className="text-sm text-[#808080] mb-2">🛒 DIY Junk Removal</p>
+                <p className="text-sm text-[#808080] mb-2">🛒 Rent a Dumpster</p>
                 <a href="#book-now" className="btn-primary text-center block">
                   <svg
                     className="w-6 h-6 mr-2 inline"
@@ -90,7 +90,7 @@ export default function Hero() {
                   />
                 </svg>
                 <span className="text-[#999999]">
-                  Same-day delivery available
+                  Same-day delivery in Columbia
                 </span>
               </div>
               <div className="flex items-start gap-2">

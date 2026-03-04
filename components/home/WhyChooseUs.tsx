@@ -18,8 +18,8 @@ export default function WhyChooseUs() {
       ),
       title: "Fast & Reliable",
       points: [
-        "Same-day delivery available",
-        "Delivery within 2-4 hours (most orders)",
+        "Same-day delivery in Columbia",
+        "Delivery within 2-4 hours (most Columbia orders)",
         "On-time guarantee or $50 off",
       ],
     },

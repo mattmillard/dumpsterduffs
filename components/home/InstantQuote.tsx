@@ -150,7 +150,7 @@ export default function InstantQuote() {
                     <p className="text-sm text-[#808080] mb-4">
                       ✓ Includes delivery, pickup, and disposal
                       <br />
-                      ✓ Same-day delivery available
+                      ✓ Same-day delivery in Columbia
                       <br />✓ Add loading service for $149
                     </p>
                     <a

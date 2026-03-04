@@ -8,7 +8,7 @@ export default function DualServiceShowcase() {
             <span className="text-primary">Your Way to Ditch Your Stuff</span>
           </h2>
           <p className="text-lg text-[#999999] text-balance">
-            Whether you&apos;re a DIY warrior or prefer hands-off service, Dumpster Duff has your solution
+            Whether you prefer to load it yourself or want professional service, Dumpster Duff has your solution
           </p>
         </div>
 
@@ -20,7 +20,7 @@ export default function DualServiceShowcase() {
               <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
                 <span className="text-2xl">🛒</span>
               </div>
-              <h3 className="text-2xl font-bold text-white">DIY Dumpster Rental</h3>
+              <h3 className="text-2xl font-bold text-white">Dumpster Rental</h3>
             </div>
 
             <p className="text-[#999999] mb-6">
@@ -45,7 +45,7 @@ export default function DualServiceShowcase() {
                 <svg className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                <span className="text-[#999999]">Same-day delivery available</span>
+                <span className="text-[#999999]">Same-day delivery in Columbia</span>
               </li>
               <li className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">

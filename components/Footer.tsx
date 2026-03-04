@@ -91,7 +91,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2 text-[#999999]">
               <li>15-Yard Dumpster Rental</li>
-              <li>Same-Day Delivery</li>
+              <li>Same-Day Delivery (Columbia)</li>
               <li>Flexible Rental Periods</li>
               <li>Loading Services Available</li>
               <li>Residential Projects</li>

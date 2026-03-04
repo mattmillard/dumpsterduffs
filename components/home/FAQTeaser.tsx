@@ -15,7 +15,7 @@ export default function FAQTeaser() {
     {
       question: "What size dumpster do I need for my project?",
       answer:
-        "Our 15-yard dumpster is perfect for most residential projects including kitchen remodels, garage cleanouts, roofing jobs (up to 2,000 sq ft), and small deck removals. It holds about 4-5 pickup truck loads. Call us if you need help determining the right fit.",
+        "Our 15-yard dumpster is perfect for most residential projects including kitchen remodels, garage cleanouts, roofing jobs (up to 2,000 sq ft), and small deck removals. Call us if you need help determining the right fit.",
       schema: true,
     },
     {
