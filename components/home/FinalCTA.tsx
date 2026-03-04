@@ -81,7 +81,7 @@ export default function FinalCTA() {
               4.9★ Rated
             </span>
             <span>•</span>
-            <span>🇺🇸 US Veteran Owned</span>
+            <span>US Veteran Owned</span>
             <span>•</span>
             <span>Same-Day Delivery (Columbia)</span>
             <span>•</span>

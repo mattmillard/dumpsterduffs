@@ -24,7 +24,7 @@ export default function Footer() {
             </p>
             <div className="flex gap-4 mt-4">
               <span className="trust-badge bg-[#262626] text-white border border-[#404040]">
-                🇺🇸 US Veteran Owned
+                US Veteran Owned
               </span>
             </div>
           </div>
