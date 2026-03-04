@@ -9,7 +9,7 @@ export default function Header() {
   return (
     <header className="bg-[#1A1A1A] shadow-lg sticky top-0 z-50 border-b border-[#404040]">
       <div className="container-custom">
-        <div className="flex items-center justify-between h-56">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link
             href="/"
@@ -18,7 +18,7 @@ export default function Header() {
             <img
               src="/logo-horizontal.png"
               alt="Dumpster Duff's"
-              className="h-48 w-auto"
+              className="h-12 w-auto"
             />
           </Link>
 
