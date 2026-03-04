@@ -148,7 +148,8 @@ export default function FAQ() {
             Frequently Asked Questions
           </h1>
           <p className="text-xl text-white/70 mb-12">
-            Find answers to all your questions about dumpster rental and junk removal services.
+            Find answers to all your questions about dumpster rental and junk
+            removal services.
           </p>
 
           {/* FAQ Categories */}
@@ -182,7 +183,10 @@ export default function FAQ() {
                           />
                         </svg>
                       </summary>
-                      <p className="mt-4 text-white/80" dangerouslySetInnerHTML={{ __html: faq.a }}></p>
+                      <p
+                        className="mt-4 text-white/80"
+                        dangerouslySetInnerHTML={{ __html: faq.a }}
+                      ></p>
                     </details>
                   ))}
                 </div>

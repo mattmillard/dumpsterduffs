@@ -174,7 +174,8 @@ export default function SizesPricing() {
               Ready to book your dumpster?
             </h3>
             <p className="text-white/70 mb-6">
-              Same-day delivery in Columbia. Other areas may also qualify—call to confirm.
+              Same-day delivery in Columbia. Other areas may also qualify—call
+              to confirm.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="#book-now" className="btn-primary">

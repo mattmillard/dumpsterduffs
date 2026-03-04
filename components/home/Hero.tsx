@@ -25,14 +25,17 @@ export default function Hero() {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 text-balance">
               <span className="text-primary">Call Duff & Ditch Your Stuff</span>
             </h1>
-            
+
             <p className="text-lg md:text-xl text-[#999999] mb-8 text-balance">
-              Junk removal & dumpster rentals in Missouri. We handle it your way.
+              Junk removal & dumpster rentals in Missouri. We handle it your
+              way.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-12">
               <div>
-                <p className="text-sm text-[#808080] mb-2">🛒 Rent a Dumpster</p>
+                <p className="text-sm text-[#808080] mb-2">
+                  🛒 Rent a Dumpster
+                </p>
                 <a href="#book-now" className="btn-primary text-center block">
                   <svg
                     className="w-6 h-6 mr-2 inline"
@@ -49,11 +52,18 @@ export default function Hero() {
                   </svg>
                   Rent a Dumpster
                 </a>
-                <p className="text-xs text-[#666666] mt-2">From $325 delivery + $5/day</p>
+                <p className="text-xs text-[#666666] mt-2">
+                  From $325 delivery + $5/day
+                </p>
               </div>
               <div>
-                <p className="text-sm text-[#808080] mb-2">👷 Professional Removal</p>
-                <a href="tel:+15733564272" className="btn-secondary text-center block">
+                <p className="text-sm text-[#808080] mb-2">
+                  👷 Professional Removal
+                </p>
+                <a
+                  href="tel:+15733564272"
+                  className="btn-secondary text-center block"
+                >
                   <svg
                     className="w-6 h-6 mr-2 inline"
                     fill="none"
