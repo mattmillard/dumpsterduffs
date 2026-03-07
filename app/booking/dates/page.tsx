@@ -85,18 +85,17 @@ export default function BookingDatesPage() {
 
         // Check if selected size is blocked
         const sizeYards = selectedSize.size_yards;
-        const sizeAvailability = availability.sizeAvailability?.find(
-          (sa: any) => sa.sizeYards === sizeYards,
+        const sizeAvailability = availability.sizes?.find(
+          (sa: any) => sa.size_yards === sizeYards,
         );
 
+        // Show warning if date is NOT bookable or has blocking reasons
         if (
-          !sizeAvailability?.bookable ||
-          availability.globallyBlocked ||
-          availability.blacklistedDate
+          sizeAvailability && 
+          !sizeAvailability.isBookable
         ) {
           const reason =
             availability.blockedReasons?.[0] ||
-            sizeAvailability?.reason ||
             "This date is not available for booking";
           setAvailabilityWarning(reason);
         }
@@ -142,15 +141,11 @@ export default function BookingDatesPage() {
       const availability = await response.json();
 
       const sizeYards = selectedSize?.size_yards;
-      const sizeAvailability = availability.sizeAvailability?.find(
-        (sa: any) => sa.sizeYards === sizeYards,
+      const sizeAvailability = availability.sizes?.find(
+        (sa: any) => sa.size_yards === sizeYards,
       );
 
-      if (
-        !sizeAvailability?.bookable ||
-        availability.globallyBlocked ||
-        availability.blacklistedDate
-      ) {
+      if (sizeAvailability && !sizeAvailability.isBookable) {
         setError(
           "This date is no longer available. Please select a different date.",
         );
