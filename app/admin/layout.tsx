@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { MobileHeader } from "@/components/admin-mobile/MobileHeader";
 import { MobileBottomNav } from "@/components/admin-mobile/MobileBottomNav";
@@ -14,32 +14,45 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [user, setUser] = useState<AdminUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Skip auth check for login page
+  const isLoginPage = pathname === "/admin/login";
 
   useEffect(() => {
     async function checkAuth() {
       try {
         const adminUser = await getCurrentAdminUser();
 
-        if (!adminUser) {
+        if (!adminUser && !isLoginPage) {
           router.push("/admin/login");
           return;
         }
 
-        setUser(adminUser);
+        if (adminUser) {
+          setUser(adminUser);
+        }
       } catch (err) {
         console.error("Auth error:", err);
-        setError("Authentication failed");
-        router.push("/admin/login");
+        if (!isLoginPage) {
+          setError("Authentication failed");
+          router.push("/admin/login");
+        }
       } finally {
         setLoading(false);
       }
     }
 
     checkAuth();
-  }, [router]);
+  }, [router, isLoginPage]);
+
+  // For login page, render without auth layout
+  if (isLoginPage) {
+    return <>{children}</>;
+  }
 
   if (loading) {
     return (
