@@ -90,9 +90,46 @@ export async function POST(request: Request) {
       const fromEmail = process.env.BOOKING_FROM_EMAIL;
 
       if (resendApiKey && fromEmail && payload.customer_email) {
-        // Resend email sending would go here
-        // For now, just mark as false since Resend package isn't installed
-        emailSent = false;
+        const resend = new Resend(resendApiKey);
+        
+        const emailHtml = `
+          <html>
+            <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+              <h2>Booking Confirmation</h2>
+              <p>Hi ${payload.customer_full_name},</p>
+              <p>Your dumpster rental booking has been confirmed!</p>
+              
+              <h3>Booking Details</h3>
+              <ul>
+                <li><strong>Booking Number:</strong> ${bookingNumber}</li>
+                <li><strong>Dumpster Size:</strong> ${payload.size_yards} Yard</li>
+                <li><strong>Delivery Date:</strong> ${payload.delivery_date}</li>
+                <li><strong>Pickup Date:</strong> ${payload.pickup_date}</li>
+                <li><strong>Delivery Address:</strong> ${payload.delivery_address_line_1}, ${payload.delivery_city}, ${payload.delivery_state} ${payload.delivery_zip}</li>
+                <li><strong>Total Price:</strong> $${payload.total.toFixed(2)}</li>
+              </ul>
+              
+              <h3>What's Next?</h3>
+              <p>Our team will contact you to confirm delivery details. You can reach us at (573) 356-4272.</p>
+              
+              <p>Thank you for choosing Dumpster Duff's!</p>
+            </body>
+          </html>
+        `;
+
+        const response = await resend.emails.send({
+          from: fromEmail,
+          to: payload.customer_email,
+          subject: `Booking Confirmed: ${bookingNumber}`,
+          html: emailHtml,
+        });
+
+        if (response.error) {
+          console.error("Resend email error:", response.error);
+        } else {
+          console.log("Email sent successfully:", response.data?.id);
+          emailSent = true;
+        }
       }
     } catch (emailError) {
       console.error("Email send error:", emailError);
