@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { Resend } from "resend";
+import {
+  checkBookingCapacity,
+  evaluateBlacklist,
+} from "@/lib/admin/bookingOperations";
 
 type CreateBookingPayload = {
   // Size
@@ -41,8 +45,48 @@ export async function POST(request: Request) {
 
     console.log("Received booking payload:", JSON.stringify(payload, null, 2));
 
+    const blacklistResult = await evaluateBlacklist({
+      phone: payload.customer_phone,
+      email: payload.customer_email,
+      name: payload.customer_full_name,
+      address: payload.delivery_address_line_1,
+    });
+
+    if (blacklistResult.blocked) {
+      return NextResponse.json(
+        {
+          error:
+            blacklistResult.reason ||
+            "We cannot accept bookings from this contact at this time.",
+          reason: "blacklisted",
+        },
+        { status: 403 },
+      );
+    }
+
+    const capacityCheck = await checkBookingCapacity({
+      delivery_date: payload.delivery_date,
+      return_date: payload.pickup_date,
+      size_yards: Number(payload.size_yards),
+    });
+
+    if (!capacityCheck.bookable) {
+      return NextResponse.json(
+        {
+          error: capacityCheck.message,
+          reason: capacityCheck.reason,
+          conflictingDate: capacityCheck.conflictingDate,
+          capacity: capacityCheck.capacity,
+          activeBookings: capacityCheck.activeBookings,
+        },
+        { status: 409 },
+      );
+    }
+
     // Prepare booking record (match production schema)
-    const addressLine2 = payload.delivery_address_line_2?.trim() ? ` ${payload.delivery_address_line_2}` : "";
+    const addressLine2 = payload.delivery_address_line_2?.trim()
+      ? ` ${payload.delivery_address_line_2}`
+      : "";
     const fullAddress = `${payload.delivery_address_line_1}${addressLine2}, ${payload.delivery_city}, ${payload.delivery_state} ${payload.delivery_zip}`;
 
     const bookingRecord = {
@@ -87,7 +131,7 @@ export async function POST(request: Request) {
       // Only try to send email if all required env vars are present
       if (resendApiKey && fromEmail && payload.customer_email) {
         const resend = new Resend(resendApiKey);
-        
+
         const emailHtml = `
           <html>
             <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
@@ -127,7 +171,14 @@ export async function POST(request: Request) {
           emailSent = true;
         }
       } else {
-        console.log("Email skipped - missing config. ApiKey:", !!resendApiKey, "FromEmail:", !!fromEmail, "CustomerEmail:", !!payload.customer_email);
+        console.log(
+          "Email skipped - missing config. ApiKey:",
+          !!resendApiKey,
+          "FromEmail:",
+          !!fromEmail,
+          "CustomerEmail:",
+          !!payload.customer_email,
+        );
       }
     } catch (emailError) {
       console.error("Email send error:", emailError);

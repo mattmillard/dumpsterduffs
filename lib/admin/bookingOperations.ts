@@ -75,6 +75,42 @@ const ACTIVE_BOOKING_STATUSES = new Set([
   "in_progress",
 ]);
 
+export function isActiveBookingStatus(status: string): boolean {
+  return ACTIVE_BOOKING_STATUSES.has(status);
+}
+
+export class BookingCapacityError extends Error {
+  reason: string;
+  conflictingDate?: string;
+
+  constructor(message: string, reason: string, conflictingDate?: string) {
+    super(message);
+    this.name = "BookingCapacityError";
+    this.reason = reason;
+    this.conflictingDate = conflictingDate;
+  }
+}
+
+type BookingCapacityParams = {
+  delivery_date: string;
+  return_date: string;
+  size_yards: number;
+  exclude_booking_id?: string;
+};
+
+type BookingCapacityResult = {
+  bookable: boolean;
+  reason?:
+    | "invalid_dates"
+    | "size_not_available"
+    | "date_blocked"
+    | "no_capacity";
+  message: string;
+  conflictingDate?: string;
+  capacity?: number;
+  activeBookings?: number;
+};
+
 function normalizePhone(value: string): string {
   return value.replace(/\D/g, "");
 }
@@ -404,6 +440,29 @@ export async function cancelBooking(bookingId: string, reason?: string) {
 }
 
 export async function restoreBooking(bookingId: string) {
+  const { data: booking, error: bookingError } = await supabaseAdmin
+    .from("bookings")
+    .select("id, delivery_date, return_date, size_yards")
+    .eq("id", bookingId)
+    .single();
+
+  if (bookingError) throw bookingError;
+
+  const capacityCheck = await checkBookingCapacity({
+    delivery_date: booking.delivery_date,
+    return_date: booking.return_date,
+    size_yards: Number(booking.size_yards),
+    exclude_booking_id: booking.id,
+  });
+
+  if (!capacityCheck.bookable) {
+    throw new BookingCapacityError(
+      capacityCheck.message,
+      capacityCheck.reason || "no_capacity",
+      capacityCheck.conflictingDate,
+    );
+  }
+
   const { error } = await supabaseAdmin
     .from("bookings")
     .update({ status: "scheduled", updated_at: new Date().toISOString() })
@@ -463,6 +522,121 @@ export async function getBookabilityForDate(date: string) {
     date,
     sizes: day?.sizes || [],
     blockedReasons: day?.blockedReasons || [],
+  };
+}
+
+export async function checkBookingCapacity(
+  params: BookingCapacityParams,
+): Promise<BookingCapacityResult> {
+  const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+  if (
+    !datePattern.test(params.delivery_date) ||
+    !datePattern.test(params.return_date) ||
+    params.return_date < params.delivery_date
+  ) {
+    return {
+      bookable: false,
+      reason: "invalid_dates",
+      message: "Invalid booking date range.",
+    };
+  }
+
+  const sizeYards = Number(params.size_yards);
+  const [pricing, inventory] = await Promise.all([
+    getPricingConfig(),
+    getInventoryConfig(),
+  ]);
+
+  const sizeConfig = pricing.find(
+    (size) => size.is_active && Number(size.size_yards) === sizeYards,
+  );
+
+  if (!sizeConfig) {
+    return {
+      bookable: false,
+      reason: "size_not_available",
+      message: "This dumpster size is not available.",
+    };
+  }
+
+  const matchedInventory =
+    inventory.find((item) => item.id === sizeConfig.id) ||
+    inventory.find(
+      (item) => item.name.toLowerCase() === sizeConfig.name.toLowerCase(),
+    );
+
+  const capacity = Math.max(0, Number(matchedInventory?.total_units ?? 0));
+
+  if (capacity <= 0) {
+    return {
+      bookable: false,
+      reason: "no_capacity",
+      message: "No units are configured for this dumpster size.",
+      capacity,
+      activeBookings: 0,
+    };
+  }
+
+  const [bookings, blockedDates] = await Promise.all([
+    fetchBookingsForRange(params.delivery_date, params.return_date),
+    fetchBlockedDatesForRange(params.delivery_date, params.return_date),
+  ]);
+
+  const relevantBookings = bookings.filter(
+    (booking) =>
+      booking.size_yards === sizeYards &&
+      isActiveBookingStatus(booking.status) &&
+      booking.id !== params.exclude_booking_id,
+  );
+
+  const dates = listDatesInRange(params.delivery_date, params.return_date);
+
+  for (const date of dates) {
+    const blockedForDate = blockedDates.filter(
+      (blocked) => blocked.date === date,
+    );
+    const globalBlocked = blockedForDate.some(
+      (blocked) => blocked.size_yards == null,
+    );
+    const sizeBlocked = blockedForDate.some(
+      (blocked) => blocked.size_yards === sizeYards,
+    );
+
+    if (globalBlocked || sizeBlocked) {
+      const reason =
+        blockedForDate.find(
+          (blocked) =>
+            blocked.size_yards == null || blocked.size_yards === sizeYards,
+        )?.reason || "This date is not available for booking.";
+
+      return {
+        bookable: false,
+        reason: "date_blocked",
+        message: reason,
+        conflictingDate: date,
+      };
+    }
+
+    const activeBookings = relevantBookings.filter((booking) =>
+      bookingOccupiesDate(booking, date),
+    ).length;
+
+    if (activeBookings >= capacity) {
+      return {
+        bookable: false,
+        reason: "no_capacity",
+        message: `No units available for ${sizeYards}-yard dumpsters on ${date}.`,
+        conflictingDate: date,
+        capacity,
+        activeBookings,
+      };
+    }
+  }
+
+  return {
+    bookable: true,
+    message: "Date and size are available.",
+    capacity,
   };
 }
 

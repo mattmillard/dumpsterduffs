@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import {
   addBlacklistEntry,
+  BookingCapacityError,
   blockDate,
   cancelBooking,
   freeDate,
@@ -161,6 +162,17 @@ export async function POST(request: Request) {
     const snapshot = await getCalendarSnapshot(month);
     return NextResponse.json(snapshot);
   } catch (error) {
+    if (error instanceof BookingCapacityError) {
+      return NextResponse.json(
+        {
+          error: error.message,
+          reason: error.reason,
+          conflictingDate: error.conflictingDate,
+        },
+        { status: 409 },
+      );
+    }
+
     return NextResponse.json(
       {
         error:

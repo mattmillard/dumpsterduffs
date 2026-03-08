@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import {
+  checkBookingCapacity,
   evaluateBlacklist,
-  getBookabilityForDate,
 } from "@/lib/admin/bookingOperations";
 
 type BookingCheckPayload = {
   delivery_date: string;
+  pickup_date?: string;
   size_yards: number;
   customer_phone?: string;
   customer_email?: string;
@@ -42,45 +43,20 @@ export async function POST(request: Request) {
       });
     }
 
-    // Check date availability
-    const availability = await getBookabilityForDate(payload.delivery_date);
+    const capacityCheck = await checkBookingCapacity({
+      delivery_date: payload.delivery_date,
+      return_date: payload.pickup_date || payload.delivery_date,
+      size_yards: Number(payload.size_yards),
+    });
 
-    if (availability.setupRequired) {
+    if (!capacityCheck.bookable) {
       return NextResponse.json({
         bookable: false,
-        reason: "system_setup",
-        message: "Booking system is being configured. Please try again later.",
-      });
-    }
-
-    const sizeAvailability = availability.sizes.find(
-      (s) => s.size_yards === Number(payload.size_yards),
-    );
-
-    if (!sizeAvailability) {
-      return NextResponse.json({
-        bookable: false,
-        reason: "size_not_available",
-        message: "This dumpster size is not available.",
-      });
-    }
-
-    if (!sizeAvailability.isBookable) {
-      if (sizeAvailability.isBlocked) {
-        const blockReason =
-          availability.blockedReasons?.[0] ||
-          "This date is not available for booking.";
-        return NextResponse.json({
-          bookable: false,
-          reason: "date_blocked",
-          message: blockReason,
-        });
-      }
-
-      return NextResponse.json({
-        bookable: false,
-        reason: "no_capacity",
-        message: "No units available for this size on this date.",
+        reason: capacityCheck.reason || "no_capacity",
+        message: capacityCheck.message,
+        conflictingDate: capacityCheck.conflictingDate,
+        capacity: capacityCheck.capacity,
+        activeBookings: capacityCheck.activeBookings,
       });
     }
 
