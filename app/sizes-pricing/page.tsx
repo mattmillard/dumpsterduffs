@@ -48,7 +48,7 @@ export default async function SizesPricing() {
                   <div>
                     <p className="text-white/70 mb-1">Rental Period</p>
                     <p className="text-lg font-semibold text-white">
-                      Standard: 7 days (flexible options available)
+                      Standard: 3 days (flexible options available)
                     </p>
                   </div>
                 </div>
@@ -138,7 +138,7 @@ export default async function SizesPricing() {
                   a: "We allow up to 2 tons. If you go over, overage fees apply at $50 per ton. We'll let you know before charging any overage.",
                 },
                 {
-                  q: "Can I keep the dumpster longer than 7 days?",
+                  q: "Can I keep the dumpster longer than 3 days?",
                   a: "Absolutely! Extended rentals are available. Just let us know and we can extend your rental.",
                 },
                 {

@@ -34,9 +34,9 @@ async function createSampleBookings() {
 
   const today = new Date();
 
-  // Booking 1: 7 days from now, 3-day rental
+  // Booking 1: 3 days from now, 3-day rental
   const booking1DeliveryDate = new Date(today);
-  booking1DeliveryDate.setDate(today.getDate() + 7);
+  booking1DeliveryDate.setDate(today.getDate() + 3);
   const booking1ReturnDate = new Date(booking1DeliveryDate);
   booking1ReturnDate.setDate(booking1DeliveryDate.getDate() + 3);
 

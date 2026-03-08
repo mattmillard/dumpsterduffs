@@ -188,7 +188,7 @@
 2. **Loading Service:** Rare offering—should be premium upsell, clearly priced
 3. **One Perfect Size:** Reframe as "simplified choice" not limitation
 4. **Local/Personal:** "Call Duff" implies owner involvement—lean into this
-5. **Flexible Periods:** Most competitors lock 7 days—this is a selling point
+5. **Flexible Periods:** Most competitors lock 3 days—this is a selling point
 
 ### Messaging Opportunities:
 
@@ -203,7 +203,7 @@
 
 ### 🔥 CRITICAL (Do First)
 
-1. **Add Transparent Pricing:** "$299 for 7 days, all-inclusive" on hero
+1. **Add Transparent Pricing:** "$299 for 3 days, all-inclusive" on hero
 2. **Prominent Veteran Badge:** Move to header + hero (trust signal)
 3. **Instant Price Estimator:** 3-field form (project, ZIP, details) → estimate
 4. **Sticky Mobile CTA:** Call + Book buttons always visible on mobile

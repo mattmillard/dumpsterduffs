@@ -45,7 +45,7 @@ export default async function FAQTeaser() {
     {
       question: "How long can I keep the dumpster?",
       answer:
-        "Standard rental is 7 days, but we offer flexible periods. Keep it as long as you need—just let us know. Need more time? We can extend your rental.",
+        "Standard rental is 3 days, but we offer flexible periods. Keep it as long as you need—just let us know. Need more time? We can extend your rental.",
       schema: true,
     },
   ];

@@ -429,7 +429,7 @@ add_shortcode('square_booking', 'square_booking_widget');
     "@type": "Offer",
     "price": "299",
     "priceCurrency": "USD",
-    "description": "15-yard dumpster rental for 7 days"
+    "description": "15-yard dumpster rental for 3 days"
   }
 }
 ```
@@ -446,7 +446,7 @@ add_shortcode('square_booking', 'square_booking_widget');
       "name": "How much does a dumpster rental cost in Missouri?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Our 15-yard dumpster rental starts at $299 for up to 7 days..."
+        "text": "Our 15-yard dumpster rental starts at $299 for up to 3 days..."
       }
     }
   ]

@@ -34,7 +34,7 @@ export default function HowItWorks() {
         </>
       ),
       details: [
-        "Choose your rental period (standard: 7 days)",
+        "Choose your rental period (standard: 3 days)",
         "Tell us about your project",
         "Select preferred delivery date/time",
         "Receive instant price quote",
@@ -58,7 +58,7 @@ export default function HowItWorks() {
       description:
         "Take your time filling the dumpster. Keep it for your entire rental period. Need more time? Just let us know—we're flexible.",
       details: [
-        "Keep rental for up to 7 days (or longer)",
+        "Keep rental for up to 3 days (or longer)",
         "Up to 2 tons of waste included",
         "No rush—work at your own pace",
         "Optional loading service available",
@@ -145,7 +145,7 @@ export default function HowItWorks() {
                 {[
                   { label: "Book", time: "2-5 min" },
                   { label: "Deliver", time: "2-4 hours" },
-                  { label: "Load", time: "2-7 days" },
+                  { label: "Load", time: "2-3 days" },
                   { label: "Pickup", time: "30 min" },
                 ].map((item, idx) => (
                   <div key={idx} className="text-center">

@@ -156,7 +156,7 @@
 - **Dimensions:** 16' L × 8' W × 4' H
 - **Capacity:** ~4.5 pickup truck loads
 - **Weight limit:** Up to 2 tons included
-- **Price:** Starting at $299 for 7 days  
+- **Price:** Starting at $299 for 3 days  
   **Perfect for:**
 - Kitchen or bathroom remodels
 - Garage or attic cleanouts
@@ -251,7 +251,7 @@
 **Headline:** Frequently Asked Questions  
 **Subhead:** Got questions? We've got answers. Here are the most common questions we hear from customers.  
 **Q1:** How much does a dumpster rental cost in Missouri?  
-**A1:** Our 15-yard dumpster rental starts at $299 for up to 7 days. This includes delivery, pickup, disposal (up to 2 tons), and all fees. No hidden charges...  
+**A1:** Our 15-yard dumpster rental starts at $299 for up to 3 days. This includes delivery, pickup, disposal (up to 2 tons), and all fees. No hidden charges...  
 _(Include 4 more FAQs)_  
 **CTA:** View All FAQs | Call Us: (573) 356-4272
 
@@ -271,7 +271,7 @@ _(Include 4 more FAQs)_
 ### General Questions
 
 **Q: How much does a dumpster rental cost in Missouri?**  
-A: Our 15-yard dumpster rental starts at $299 for up to 7 days. This all-inclusive price covers delivery, pickup, disposal (up to 2 tons), and all fees. No fuel charges, no surprise costs. Need to keep it longer? We charge $15/day for extended rentals.
+A: Our 15-yard dumpster rental starts at $299 for up to 3 days. This all-inclusive price covers delivery, pickup, disposal (up to 2 tons), and all fees. No fuel charges, no surprise costs. Need to keep it longer? We charge $15/day for extended rentals.
 
 **Q: What size dumpster do I need for my project?**  
 A: Our 15-yard dumpster is perfect for most residential and small commercial projects. It holds about 4-5 pickup truck loads and is ideal for:
@@ -285,7 +285,7 @@ A: Our 15-yard dumpster is perfect for most residential and small commercial pro
   Not sure? Call us at (573) 356-4272 and we'll help you figure it out.
 
 **Q: How long can I keep the dumpster?**  
-A: Standard rental is 7 days, but we're flexible. Keep it as long as you need—just let us know. Extended rentals are $15/day. Most customers finish within 5-7 days, but we've had dumpsters out for 3 weeks for larger projects. No pressure.
+A: Standard rental is 3 days, but we're flexible. Keep it as long as you need—just let us know. Extended rentals are $15/day. Most customers finish within 3-5 days, but we've had dumpsters out for 3 weeks for larger projects. No pressure.
 
 **Q: How quickly can you deliver?**  
 A: Most orders are delivered within 2-4 hours during business hours. Same-day delivery is available for orders placed before 2 PM Monday-Friday. Weekend delivery available by request. We'll give you a delivery window when you book.

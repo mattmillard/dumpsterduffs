@@ -26,7 +26,7 @@ async function createTestBooking() {
 
   // Test booking data
   const deliveryDate = new Date();
-  deliveryDate.setDate(deliveryDate.getDate() + 7); // 7 days from now
+  deliveryDate.setDate(deliveryDate.getDate() + 3); // 3 days from now
 
   const returnDate = new Date(deliveryDate);
   returnDate.setDate(returnDate.getDate() + 3); // 3-day rental
