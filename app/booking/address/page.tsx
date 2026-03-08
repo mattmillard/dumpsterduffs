@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   BookingProgressBar,
@@ -25,6 +25,113 @@ export default function BookingAddressPage() {
   const [city, setCity] = useState("");
   const [state, setState] = useState("MO");
   const [zip, setZip] = useState("");
+  const autocompleteListenerRef = useRef<{ remove: () => void } | null>(null);
+
+  const parsePlaceComponents = (addressComponents: any[] = []) => {
+    const byType = (type: string) =>
+      addressComponents.find((component) => component.types?.includes(type));
+
+    const streetNumber = byType("street_number")?.long_name || "";
+    const route = byType("route")?.long_name || "";
+    const locality =
+      byType("locality")?.long_name || byType("postal_town")?.long_name || "";
+    const adminArea = byType("administrative_area_level_1")?.short_name || "";
+    const postalCode = byType("postal_code")?.long_name || "";
+    const postalCodeSuffix = byType("postal_code_suffix")?.long_name || "";
+
+    const streetAddress = [streetNumber, route].filter(Boolean).join(" ").trim();
+    const zipCode = postalCodeSuffix
+      ? `${postalCode}-${postalCodeSuffix}`
+      : postalCode;
+
+    return {
+      streetAddress,
+      locality,
+      adminArea,
+      zipCode,
+    };
+  };
+
+  const initializeAutocomplete = () => {
+    const maps = (window as any).google?.maps;
+    const input = document.getElementById(
+      "booking-street-address",
+    ) as HTMLInputElement | null;
+
+    if (!maps?.places || !input) {
+      return;
+    }
+
+    autocompleteListenerRef.current?.remove?.();
+
+    const autocomplete = new maps.places.Autocomplete(input, {
+      types: ["address"],
+      componentRestrictions: { country: "us" },
+      fields: ["address_components", "formatted_address"],
+    });
+
+    autocompleteListenerRef.current = autocomplete.addListener(
+      "place_changed",
+      () => {
+        const place = autocomplete.getPlace();
+        if (!place) {
+          return;
+        }
+
+        const parsed = parsePlaceComponents(place.address_components || []);
+
+        if (parsed.streetAddress) {
+          setAddressLine1(parsed.streetAddress);
+        } else if (place.formatted_address) {
+          setAddressLine1(place.formatted_address.split(",")[0]?.trim() || "");
+        }
+
+        if (parsed.locality) {
+          setCity(parsed.locality);
+        }
+
+        if (parsed.adminArea) {
+          setState(parsed.adminArea.toUpperCase());
+        }
+
+        if (parsed.zipCode) {
+          setZip(parsed.zipCode);
+        }
+      },
+    );
+  };
+
+  const loadGoogleMapsScript = async () => {
+    const mapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+    if (!mapsApiKey) {
+      return;
+    }
+
+    if ((window as any).google?.maps?.places) {
+      initializeAutocomplete();
+      return;
+    }
+
+    const scriptId = "google-maps-places-script";
+    const existingScript = document.getElementById(scriptId) as
+      | HTMLScriptElement
+      | null;
+
+    if (existingScript) {
+      existingScript.addEventListener("load", initializeAutocomplete, {
+        once: true,
+      });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.id = scriptId;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${mapsApiKey}&libraries=places`;
+    script.async = true;
+    script.defer = true;
+    script.addEventListener("load", initializeAutocomplete, { once: true });
+    document.head.appendChild(script);
+  };
 
   useEffect(() => {
     const sizeId = sessionStorage.getItem("booking_size_id");
@@ -32,6 +139,14 @@ export default function BookingAddressPage() {
       router.push("/booking");
     }
   }, [router]);
+
+  useEffect(() => {
+    loadGoogleMapsScript();
+
+    return () => {
+      autocompleteListenerRef.current?.remove?.();
+    };
+  }, []);
 
   const handleBack = () => {
     router.push("/booking/dates");
@@ -77,11 +192,13 @@ export default function BookingAddressPage() {
         <div className="space-y-6">
           <FormInput
             label="Street Address"
+            id="booking-street-address"
             name="address-line1"
             autoComplete="address-line1"
             value={addressLine1}
             onChange={(e) => setAddressLine1(e.target.value)}
             placeholder="123 Main Street"
+            helpText="Start typing and select your address to autofill city, state, and ZIP."
             required
           />
 
