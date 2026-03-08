@@ -31,6 +31,12 @@ export default function Header() {
               Sizes & Pricing
             </Link>
             <Link
+              href="/junk-removal"
+              className="text-white hover:text-primary font-semibold transition-colors"
+            >
+              Junk Removal
+            </Link>
+            <Link
               href="/how-it-works"
               className="text-white hover:text-primary font-semibold transition-colors"
             >
@@ -41,12 +47,6 @@ export default function Header() {
               className="text-white hover:text-primary font-semibold transition-colors"
             >
               Service Areas
-            </Link>
-            <Link
-              href="/junk-removal"
-              className="text-white hover:text-primary font-semibold transition-colors"
-            >
-              Junk Removal
             </Link>
             <Link
               href="/about"
@@ -111,6 +111,12 @@ export default function Header() {
                 Sizes & Pricing
               </Link>
               <Link
+                href="/junk-removal"
+                className="text-white hover:text-primary font-semibold py-2 transition-colors"
+              >
+                Junk Removal
+              </Link>
+              <Link
                 href="/how-it-works"
                 className="text-white hover:text-primary font-semibold py-2 transition-colors"
               >
@@ -121,12 +127,6 @@ export default function Header() {
                 className="text-white hover:text-primary font-semibold py-2 transition-colors"
               >
                 Service Areas
-              </Link>
-              <Link
-                href="/junk-removal"
-                className="text-white hover:text-primary font-semibold py-2 transition-colors"
-              >
-                Junk Removal
               </Link>
               <Link
                 href="/about"
