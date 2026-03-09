@@ -5,6 +5,7 @@ This guide walks you through setting up real authentication for the admin panel 
 ## Overview
 
 The admin authentication system uses:
+
 - **Supabase Auth** for user authentication (email/password)
 - **admin_users table** to control admin access and roles
 - **Row Level Security (RLS)** policies for data protection
@@ -21,6 +22,7 @@ The admin authentication system uses:
 6. Click **Run** to execute the schema
 
 This creates:
+
 - `admin_users` table with proper structure
 - RLS policies for secure access
 - Indexes for performance
@@ -41,6 +43,7 @@ This creates:
 ### 2.2 Get User UUID
 
 After creating the user:
+
 1. Find `matt.millard@me.com` in the Users list
 2. Click on the user to view details
 3. **Copy the User ID (UUID)** - it looks like: `a1b2c3d4-e5f6-7890-abcd-ef1234567890`
@@ -68,8 +71,8 @@ VALUES (
 Run this query to confirm the user was added:
 
 ```sql
-SELECT id, email, full_name, role, is_active, created_at 
-FROM admin_users 
+SELECT id, email, full_name, role, is_active, created_at
+FROM admin_users
 WHERE email = 'matt.millard@me.com';
 ```
 
@@ -92,6 +95,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGc...
 ## Step 4: Test the Login
 
 1. Start your dev server:
+
    ```bash
    npm run dev
    ```
@@ -118,16 +122,19 @@ Test that authentication is working:
 The system supports three roles with different permissions:
 
 ### Owner
+
 - Full access to everything
 - Can manage other admin users
 - Can view all settings and analytics
 
 ### Admin
+
 - Can manage bookings, inventory, pricing, zones
 - Can view dashboard and analytics
 - **Cannot** manage other users
 
 ### Dispatcher
+
 - Can view and manage bookings
 - Limited access to other features
 - Read-only on most pages
@@ -155,6 +162,7 @@ VALUES (
 ### Programmatically (Future Feature)
 
 You can build an admin user management page at `/admin/users` where owners can:
+
 - Invite new admins
 - Change roles
 - Deactivate users
@@ -162,28 +170,31 @@ You can build an admin user management page at `/admin/users` where owners can:
 Example code structure:
 
 ```typescript
-import { supabaseAdmin } from '@/lib/supabase/admin';
+import { supabaseAdmin } from "@/lib/supabase/admin";
 
 // Create new admin user
-async function createAdminUser(email: string, password: string, role: 'admin' | 'dispatcher') {
+async function createAdminUser(
+  email: string,
+  password: string,
+  role: "admin" | "dispatcher",
+) {
   // 1. Create auth user
-  const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.createUser({
-    email,
-    password,
-    email_confirm: true
-  });
+  const { data: authUser, error: authError } =
+    await supabaseAdmin.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true,
+    });
 
   if (authError) throw authError;
 
   // 2. Create admin_users record
-  const { error: dbError } = await supabaseAdmin
-    .from('admin_users')
-    .insert({
-      id: authUser.user.id,
-      email,
-      role,
-      is_active: true
-    });
+  const { error: dbError } = await supabaseAdmin.from("admin_users").insert({
+    id: authUser.user.id,
+    email,
+    role,
+    is_active: true,
+  });
 
   if (dbError) throw dbError;
 }
@@ -249,9 +260,10 @@ async function createAdminUser(email: string, password: string, role: 'admin' | 
 ### RLS Policies Not Working
 
 Run this query to check policies:
+
 ```sql
-SELECT schemaname, tablename, policyname, permissive, roles, cmd 
-FROM pg_policies 
+SELECT schemaname, tablename, policyname, permissive, roles, cmd
+FROM pg_policies
 WHERE tablename = 'admin_users';
 ```
 
@@ -281,6 +293,7 @@ Before deploying to production:
 ## Support
 
 For issues or questions:
+
 - Check Supabase docs: https://supabase.com/docs/guides/auth
 - Review RLS policies: https://supabase.com/docs/guides/auth/row-level-security
 - Check this project's `lib/auth/admin.ts` for auth utilities

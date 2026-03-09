@@ -130,9 +130,7 @@ export function SizeSelection({
           />
           {/* Show button after selected size on mobile only */}
           {mobileButton && index === selectedIndex && (
-            <div className="md:hidden col-span-1">
-              {mobileButton}
-            </div>
+            <div className="md:hidden col-span-1">{mobileButton}</div>
           )}
         </React.Fragment>
       ))}
