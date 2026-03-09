@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { DumpsterSizeOption } from "@/types/booking";
 
 interface SizeCardProps {
@@ -96,6 +97,7 @@ interface SizeSelectionProps {
   selectedSizeId?: string;
   onSelect: (sizeId: string) => void;
   isLoading?: boolean;
+  mobileButton?: React.ReactNode;
 }
 
 export function SizeSelection({
@@ -103,6 +105,7 @@ export function SizeSelection({
   selectedSizeId,
   onSelect,
   isLoading,
+  mobileButton,
 }: SizeSelectionProps) {
   if (isLoading) {
     return (
@@ -114,15 +117,24 @@ export function SizeSelection({
     );
   }
 
+  const selectedIndex = sizes.findIndex((size) => size.id === selectedSizeId);
+
   return (
     <div className="grid md:grid-cols-2 gap-6">
-      {sizes.map((size) => (
-        <SizeCard
-          key={size.id}
-          size={size}
-          isSelected={selectedSizeId === size.id}
-          onSelect={onSelect}
-        />
+      {sizes.map((size, index) => (
+        <React.Fragment key={size.id}>
+          <SizeCard
+            size={size}
+            isSelected={selectedSizeId === size.id}
+            onSelect={onSelect}
+          />
+          {/* Show button after selected size on mobile only */}
+          {mobileButton && index === selectedIndex && (
+            <div className="md:hidden col-span-1">
+              {mobileButton}
+            </div>
+          )}
+        </React.Fragment>
       ))}
     </div>
   );
