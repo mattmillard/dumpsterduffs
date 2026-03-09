@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createServerClient } from "@supabase/ssr";
 
 /**
  * Middleware for protecting admin routes and managing authentication
@@ -14,6 +14,11 @@ import { createClient } from "@supabase/supabase-js";
  */
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
 
   // Skip middleware for login page
   if (pathname === "/admin/login") {
@@ -23,7 +28,6 @@ export async function middleware(request: NextRequest) {
   // Only check authentication for admin routes
   if (pathname.startsWith("/admin")) {
     try {
-      // Create a Supabase client with the request cookies
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
       const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
@@ -32,25 +36,36 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL("/admin/login", request.url));
       }
 
-      // Get session from cookies
-      const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-        auth: {
-          persistSession: false,
-          autoRefreshToken: false,
-        },
-        global: {
-          headers: {
-            cookie: request.headers.get("cookie") || "",
+      const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+        cookies: {
+          getAll() {
+            return request.cookies.getAll();
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              request.cookies.set(name, value);
+            });
+
+            response = NextResponse.next({
+              request: {
+                headers: request.headers,
+              },
+            });
+
+            cookiesToSet.forEach(({ name, value, options }) => {
+              response.cookies.set(name, value, options);
+            });
           },
         },
       });
 
       const {
-        data: { session },
-      } = await supabase.auth.getSession();
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
 
       // If no session, redirect to login
-      if (!session) {
+      if (userError || !user) {
         const loginUrl = new URL("/admin/login", request.url);
         loginUrl.searchParams.set("redirect", pathname);
         return NextResponse.redirect(loginUrl);
@@ -60,7 +75,7 @@ export async function middleware(request: NextRequest) {
       const { data: adminUser, error } = await supabase
         .from("admin_users")
         .select("id, is_active")
-        .eq("id", session.user.id)
+        .eq("id", user.id)
         .single();
 
       if (error || !adminUser || !adminUser.is_active) {
@@ -70,7 +85,7 @@ export async function middleware(request: NextRequest) {
       }
 
       // User is authenticated and authorized
-      return NextResponse.next();
+      return response;
     } catch (error) {
       console.error("Middleware auth error:", error);
       return NextResponse.redirect(new URL("/admin/login", request.url));
