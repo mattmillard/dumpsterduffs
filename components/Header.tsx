@@ -1,10 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   return (
     <header className="bg-[#1A1A1A] shadow-lg sticky top-0 z-50 border-b border-[#404040]">
@@ -106,43 +112,53 @@ export default function Header() {
             <nav className="flex flex-col gap-4">
               <Link
                 href="/sizes-pricing"
+                onClick={() => setMobileMenuOpen(false)}
                 className="text-white hover:text-primary font-semibold py-2 transition-colors"
               >
                 Sizes & Pricing
               </Link>
               <Link
                 href="/junk-removal"
+                onClick={() => setMobileMenuOpen(false)}
                 className="text-white hover:text-primary font-semibold py-2 transition-colors"
               >
                 Junk Removal
               </Link>
               <Link
                 href="/how-it-works"
+                onClick={() => setMobileMenuOpen(false)}
                 className="text-white hover:text-primary font-semibold py-2 transition-colors"
               >
                 How It Works
               </Link>
               <Link
                 href="/service-areas"
+                onClick={() => setMobileMenuOpen(false)}
                 className="text-white hover:text-primary font-semibold py-2 transition-colors"
               >
                 Service Areas
               </Link>
               <Link
                 href="/about"
+                onClick={() => setMobileMenuOpen(false)}
                 className="text-white hover:text-primary font-semibold py-2 transition-colors"
               >
                 About
               </Link>
               <a
                 href="tel:+15733564272"
+                onClick={() => setMobileMenuOpen(false)}
                 className="text-primary font-bold text-lg py-2"
               >
                 (573) 356-4272
               </a>
-              <a href="/booking" className="btn-primary mt-2">
+              <Link
+                href="/booking"
+                onClick={() => setMobileMenuOpen(false)}
+                className="btn-primary mt-2"
+              >
                 Book Now
-              </a>
+              </Link>
             </nav>
           </div>
         )}

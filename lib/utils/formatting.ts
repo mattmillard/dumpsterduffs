@@ -30,9 +30,7 @@ export function formatDateLong(dateStr: string): string {
 export function formatPhoneNumber(phone: string): string {
   const cleaned = phone.replace(/\D/g, "");
   const normalized =
-    cleaned.length > 10 && cleaned.startsWith("1")
-      ? cleaned.slice(1)
-      : cleaned;
+    cleaned.length > 10 && cleaned.startsWith("1") ? cleaned.slice(1) : cleaned;
 
   if (normalized.length === 10) {
     return `(${normalized.slice(0, 3)}) ${normalized.slice(3, 6)}-${normalized.slice(6)}`;

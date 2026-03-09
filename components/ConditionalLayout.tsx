@@ -9,14 +9,13 @@ export function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isBookingPage = pathname?.startsWith("/booking");
   const isAdminPage = pathname?.startsWith("/admin");
-  const showPublicChrome = !isBookingPage && !isAdminPage;
 
   return (
     <>
-      {showPublicChrome && <Header />}
+      {!isBookingPage && <Header />}
       <main>{children}</main>
-      {showPublicChrome && <Footer />}
-      {showPublicChrome && <StickyCTA />}
+      {!isBookingPage && <Footer />}
+      {!isBookingPage && !isAdminPage && <StickyCTA />}
     </>
   );
 }

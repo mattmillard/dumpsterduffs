@@ -40,7 +40,8 @@ export async function GET() {
       (booking) => booking.delivery_date >= startOfMonth,
     );
     const pendingPayments = bookings.filter(
-      (booking) => booking.payment_status !== "paid",
+      (booking) =>
+        booking.payment_status !== "paid" && booking.status !== "cancelled",
     ).length;
     const pendingDeliveries = bookings.filter(
       (booking) => booking.status === "scheduled",
@@ -73,7 +74,10 @@ export async function GET() {
     }));
 
     const alerts = bookings
-      .filter((booking) => booking.payment_status !== "paid")
+      .filter(
+        (booking) =>
+          booking.payment_status !== "paid" && booking.status !== "cancelled",
+      )
       .slice(0, 4)
       .map((booking) => ({
         id: booking.id,
