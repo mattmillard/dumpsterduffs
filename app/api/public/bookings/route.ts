@@ -459,7 +459,7 @@ Dumpster Duff's Admin System
 
         const adminResponse = await resend.emails.send({
           from: `"Dumpster Duff's Bookings" <${fromEmail}>`,
-          to: "matt.millard@icloud.com",
+          to: "wantsomekarn@gmail.com",
           replyTo: payload.customer_email,
           subject: `🎉 New Booking: ${bookingNumber} - $${payload.total.toFixed(2)}`,
           html: adminEmailHtml,
