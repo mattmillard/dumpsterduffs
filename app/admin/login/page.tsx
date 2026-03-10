@@ -193,8 +193,7 @@ function AdminLoginForm() {
           ? redirectTarget
           : "/admin/dashboard";
 
-      router.push(safeRedirect);
-      router.refresh();
+      window.location.assign(safeRedirect);
     } catch (err) {
       setError("An unexpected error occurred. Please try again.");
       console.error("Login error:", err);
