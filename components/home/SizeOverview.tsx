@@ -162,7 +162,7 @@ export default async function SizeOverview() {
                 href="/how-it-works#size-calculator"
                 className="btn bg-[#262626] text-white border-2 border-primary/30 hover:border-primary hover:text-primary"
               >
-                Use Size Calculator
+                How It Works
               </a>
             </div>
           </div>
