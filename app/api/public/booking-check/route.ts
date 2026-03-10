@@ -14,6 +14,13 @@ type BookingCheckPayload = {
   delivery_address_line_1?: string;
 };
 
+function getLocalDateString(date = new Date()): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 export async function POST(request: Request) {
   try {
     const payload = (await request.json()) as BookingCheckPayload;
@@ -23,6 +30,15 @@ export async function POST(request: Request) {
         { error: "delivery_date and size_yards are required" },
         { status: 400 },
       );
+    }
+
+    const today = getLocalDateString();
+    if (payload.delivery_date <= today) {
+      return NextResponse.json({
+        bookable: false,
+        reason: "invalid_delivery_date",
+        message: "Delivery date must be in the future.",
+      });
     }
 
     // Check blacklist first

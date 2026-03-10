@@ -39,11 +39,29 @@ type CreateBookingPayload = {
   total: number;
 };
 
+function getLocalDateString(date = new Date()): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 export async function POST(request: Request) {
   try {
     const payload = (await request.json()) as CreateBookingPayload;
 
     console.log("Received booking payload:", JSON.stringify(payload, null, 2));
+
+    const today = getLocalDateString();
+    if (!payload.delivery_date || payload.delivery_date <= today) {
+      return NextResponse.json(
+        {
+          error: "Delivery date must be in the future.",
+          reason: "invalid_delivery_date",
+        },
+        { status: 400 },
+      );
+    }
 
     const blacklistResult = await evaluateBlacklist({
       phone: payload.customer_phone,
