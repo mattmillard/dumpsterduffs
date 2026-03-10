@@ -139,13 +139,15 @@ export async function POST(request: Request) {
             <head>
               <meta charset="UTF-8">
               <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <meta name="color-scheme" content="dark only">
+              <meta name="supported-color-schemes" content="dark">
               <title>Booking Confirmation</title>
             </head>
-            <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #e2e8f0; background-color: #0f172a;">
-              <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #0f172a; padding: 20px 0;">
+            <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #e2e8f0; background-color: #0f172a !important;">
+              <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#0f172a" style="background-color: #0f172a; padding: 20px 0;">
                 <tr>
-                  <td align="center">
-                    <table width="600" cellpadding="0" cellspacing="0" style="background-color: #1e293b; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+                  <td align="center" bgcolor="#0f172a" style="background-color: #0f172a;">
+                    <table width="600" cellpadding="0" cellspacing="0" bgcolor="#1e293b" style="background-color: #1e293b; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
                       <!-- Header -->
                       <tr>
                         <td style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); padding: 30px; text-align: center; border-radius: 8px 8px 0 0;">
@@ -160,7 +162,7 @@ export async function POST(request: Request) {
                           <p style="font-size: 16px; margin: 0 0 30px; color: #e2e8f0;">Great news! Your dumpster rental booking has been confirmed and our team is preparing for your delivery.</p>
                           
                           <!-- Booking Details Card -->
-                          <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #334155; border-radius: 6px; border: 1px solid #475569; margin-bottom: 30px;">
+                          <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#334155" style="background-color: #334155; border-radius: 6px; border: 1px solid #475569; margin-bottom: 30px;">
                             <tr>
                               <td style="padding: 25px;">
                                 <h2 style="color: #93c5fd; font-size: 18px; margin: 0 0 20px; font-weight: 600;">Booking Details</h2>
@@ -210,7 +212,7 @@ export async function POST(request: Request) {
                       
                       <!-- Footer -->
                       <tr>
-                        <td style="background-color: #0f172a; padding: 30px; text-align: center; border-radius: 0 0 8px 8px; border-top: 1px solid #475569;">
+                        <td bgcolor="#0f172a" style="background-color: #0f172a; padding: 30px; text-align: center; border-radius: 0 0 8px 8px; border-top: 1px solid #475569;">
                           <p style="color: #64748b; font-size: 12px; margin: 0 0 5px;">Dumpster Duff's</p>
                           <p style="color: #64748b; font-size: 12px; margin: 0;">(573) 356-4272 | dustin@dumpsterduffs.com</p>
                         </td>
