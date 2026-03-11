@@ -24,7 +24,7 @@ export default async function FAQ() {
         },
         {
           q: "Can I extend my rental?",
-          a: "In many cases, yes. Extensions are based on availability and existing reservations. Call us before your scheduled pickup date, and we’ll confirm whether we can extend your rental.",
+          a: "In many cases, yes. Extensions are based on availability and existing reservations. <a href='tel:+15733564272' class='text-primary hover:underline'>Call us</a> before your scheduled pickup date, and we’ll confirm whether we can extend your rental.",
         },
         {
           q: "How do I book?",
@@ -37,7 +37,7 @@ export default async function FAQ() {
       faqs: [
         {
           q: "Is same-day delivery available?",
-          a: "Same-day delivery is available in Columbia. Other service areas may also qualify for same-day delivery depending on demand and scheduling—call us to confirm availability.",
+          a: "Same-day delivery is available in Columbia. Other service areas may also qualify for same-day delivery depending on demand and scheduling—<a href='tel:+15733564272' class='text-primary hover:underline'>call us</a> to confirm availability.",
         },
         {
           q: "What if I need delivery on a specific date?",
@@ -49,7 +49,7 @@ export default async function FAQ() {
         },
         {
           q: "Can I change my pickup date?",
-          a: "Yes! Call us before your scheduled pickup to reschedule. We can adjust your pickup date based on your timeline.",
+          a: "Yes! <a href='tel:+15733564272' class='text-primary hover:underline'>Call us</a> before your scheduled pickup to reschedule. We can adjust your pickup date based on your timeline.",
         },
       ],
     },
@@ -91,7 +91,7 @@ export default async function FAQ() {
         },
         {
           q: "How fast can you schedule removal?",
-          a: "Often the same or next day! Call us with your needs and we'll find the quickest available time slot.",
+          a: "Often the same or next day! <a href='tel:+15733564272' class='text-primary hover:underline'>Call us</a> with your needs and we'll find the quickest available time slot.",
         },
         {
           q: "Do you haul away items from multiple rooms?",
@@ -108,11 +108,11 @@ export default async function FAQ() {
         },
         {
           q: "Can I compare costs?",
-          a: `Dumpsters are great for known quantities over time: $${pricing.basePriceLabel} delivery + $${pricing.perDayPriceLabel}/day. Junk removal is project-based pricing—call us for a free quote on your specific job. Often they're similar in price, but removal saves time & effort.`,
+          a: `Dumpsters are great for known quantities over time: $${pricing.basePriceLabel} delivery + $${pricing.perDayPriceLabel}/day. Junk removal is project-based pricing—<a href='tel:+15733564272' class='text-primary hover:underline'>call us</a> for a free quote on your specific job. Often they're similar in price, but removal saves time & effort.`,
         },
         {
           q: "What if I'm unsure which option is right?",
-          a: "Call us! We'll ask about your project, volume, and timeline, then recommend the best (and most cost-effective) solution. No pressure, just honest guidance. <a href='tel:+15733564272' class='text-primary hover:underline'>(573) 356-4272</a>",
+          a: "<a href='tel:+15733564272' class='text-primary hover:underline'>Call us</a>! We'll ask about your project, volume, and timeline, then recommend the best (and most cost-effective) solution. No pressure, just honest guidance. <a href='tel:+15733564272' class='text-primary hover:underline'>(573) 356-4272</a>",
         },
         {
           q: "Can you remove items from a rental dumpster?",
@@ -137,7 +137,7 @@ export default async function FAQ() {
         },
         {
           q: "How do I stay updated on promotions?",
-          a: "Call us to get on our list for seasonal specials and volume discounts. Follow our social media for the latest offers!",
+          a: "<a href='tel:+15733564272' class='text-primary hover:underline'>Call us</a> to get on our list for seasonal specials and volume discounts. Follow our social media for the latest offers!",
         },
       ],
     },
