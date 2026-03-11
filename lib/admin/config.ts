@@ -192,6 +192,7 @@ async function writeConfigFile<T>(path: string, value: T): Promise<void> {
 
 	const { error } = await supabaseAdmin.storage.from(BUCKET).upload(path, JSON.stringify(value), {
 		contentType: "application/json",
+		cacheControl: "0",
 		upsert: true,
 	});
 
