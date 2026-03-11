@@ -24,7 +24,7 @@ export default async function FAQ() {
         },
         {
           q: "Can I extend my rental?",
-          a: "Yes! Extended rentals are available. Just call us before your scheduled pickup date and we can extend it.",
+          a: "In many cases, yes. Extensions are based on availability and existing reservations. Call us before your scheduled pickup date, and we’ll confirm whether we can extend your rental.",
         },
         {
           q: "How do I book?",
