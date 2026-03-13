@@ -72,6 +72,73 @@ vercel
 
 ---
 
+## 🛠️ Admin Panel Documentation
+
+### Admin Route Map
+
+- `/admin` (redirects to dashboard)
+- `/admin/login`
+- `/admin/dashboard`
+- `/admin/bookings`
+- `/admin/calendar`
+- `/admin/inventory`
+- `/admin/pricing`
+- `/admin/zones`
+- `/admin/settings`
+
+### Layout System
+
+- Main admin shell is implemented in `app/admin/layout.tsx`.
+- Desktop layout:
+   - Persistent left sidebar via `components/admin/AdminSidebar.tsx`
+   - Main content column with page-level padding
+- Mobile layout:
+   - Top operations header via `components/admin-mobile/MobileHeader.tsx`
+   - Bottom navigation via `components/admin-mobile/MobileBottomNav.tsx`
+   - Content area adds bottom spacing to avoid nav overlap
+
+### Admin Panels (Modules)
+
+- Dashboard Panel:
+   - Route: `/admin/dashboard`
+   - Purpose: KPIs, alerts, quick actions, active order visibility
+- Bookings Panel:
+   - Route: `/admin/bookings`
+   - Purpose: booking management and order workflow
+- Calendar Panel:
+   - Route: `/admin/calendar`
+   - Purpose: scheduling and operational timeline
+- Inventory Panel:
+   - Route: `/admin/inventory`
+   - Purpose: dumpster/unit availability and status
+- Service Zones Panel:
+   - Route: `/admin/zones`
+   - Purpose: service area and dispatch coverage controls
+- Pricing Panel:
+   - Route: `/admin/pricing`
+   - Purpose: pricing configuration and updates
+- Settings Panel:
+   - Route: `/admin/settings`
+   - Purpose: account and system settings
+
+### Authentication and Roles
+
+- Current auth guard runs in `app/admin/layout.tsx`.
+- Admin identity is loaded from `lib/auth/admin.ts` (`getCurrentAdminUser`).
+- Auth state updates are handled by `onAuthStateChange` subscription.
+- Role model is defined in `types/admin.ts`:
+   - `owner`
+   - `admin`
+   - `dispatcher`
+
+### Navigation Behavior
+
+- Desktop sidebar items: Dashboard, Bookings, Calendar, Inventory, Service Zones, Pricing.
+- Mobile bottom nav items: Dashboard, Orders, Schedule, Inventory, Settings.
+- Sign-out action routes through `/auth/signout`.
+
+---
+
 ## 📂 Project Structure
 
 ```
