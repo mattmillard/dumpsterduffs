@@ -6,12 +6,24 @@ import { AdminTable, AdminButton } from "@/components/admin/AdminTable";
 type BookingRow = {
   id: string;
   customer_name: string;
+  customer_email?: string | null;
   customer_phone: string;
+  customer_company?: string | null;
   size_yards: number;
   delivery_date: string;
   return_date: string;
   total_price: number;
+  subtotal?: number | null;
+  delivery_fee?: number | null;
+  tax?: number | null;
   status: string;
+  payment_status?: string | null;
+  delivery_address_line_1?: string | null;
+  delivery_address_line_2?: string | null;
+  delivery_city?: string | null;
+  delivery_state?: string | null;
+  delivery_zip?: string | null;
+  placement_notes?: string | null;
 };
 
 const STATUS_OPTIONS = [
@@ -30,6 +42,20 @@ export default function AdminBookingsPage() {
   const [editingBooking, setEditingBooking] = useState<BookingRow | null>(null);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
+
+  const buildFullAddress = (booking: BookingRow) => {
+    const addressParts = [
+      booking.delivery_address_line_1,
+      booking.delivery_address_line_2,
+      [booking.delivery_city, booking.delivery_state, booking.delivery_zip]
+        .filter(Boolean)
+        .join(" "),
+    ]
+      .filter((part) => Boolean(part && String(part).trim()))
+      .map((part) => String(part).trim());
+
+    return addressParts.join(", ");
+  };
 
   const loadBookings = async () => {
     setLoading(true);
@@ -108,7 +134,7 @@ export default function AdminBookingsPage() {
   const filtered = useMemo(() => {
     return bookings.filter((booking) => {
       const haystack =
-        `${booking.id} ${booking.customer_name} ${booking.customer_phone}`.toLowerCase();
+        `${booking.id} ${booking.customer_name} ${booking.customer_phone} ${booking.customer_email || ""} ${buildFullAddress(booking)} ${booking.placement_notes || ""}`.toLowerCase();
       const matchesSearch = haystack.includes(search.toLowerCase());
       const matchesStatus =
         statusFilter === "all" || booking.status === statusFilter;
@@ -119,10 +145,40 @@ export default function AdminBookingsPage() {
   const rows = filtered.map((booking) => ({
     ...booking,
     booking_number: booking.id.slice(0, 8),
-    customer: booking.customer_name,
+    customer: (
+      <div className="space-y-1">
+        <p className="font-semibold text-white">{booking.customer_name}</p>
+        <p className="text-xs text-[#999999]">{booking.customer_phone}</p>
+        {booking.customer_email && (
+          <p className="text-xs text-[#B3D4FF]">{booking.customer_email}</p>
+        )}
+        {booking.customer_company && (
+          <p className="text-xs text-[#999999]">{booking.customer_company}</p>
+        )}
+      </div>
+    ),
+    address: (
+      <div className="space-y-1">
+        <p className="text-sm text-white">{buildFullAddress(booking) || "Address unavailable"}</p>
+        <a
+          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(buildFullAddress(booking))}`}
+          target="_blank"
+          rel="noreferrer"
+          className="text-xs text-primary hover:text-primary-light"
+        >
+          Open drop-off in Google Maps
+        </a>
+      </div>
+    ),
     size: `${booking.size_yards} Yard`,
-    delivery: booking.delivery_date,
+    delivery: (
+      <div className="space-y-1">
+        <p className="text-sm text-white">Drop off: {booking.delivery_date}</p>
+        <p className="text-xs text-[#999999]">Pick up: {booking.return_date}</p>
+      </div>
+    ),
     total: `$${Number(booking.total_price).toFixed(2)}`,
+    notes: booking.placement_notes || "—",
   }));
 
   return (
@@ -140,7 +196,7 @@ export default function AdminBookingsPage() {
       <div className="bg-[#1A1A1A] border border-[#404040] rounded-lg p-4 flex flex-col md:flex-row gap-4">
         <input
           type="search"
-          placeholder="Search by booking id, customer, or phone..."
+          placeholder="Search by booking id, customer, phone, email, address, or notes..."
           className="input-field flex-1"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
@@ -164,9 +220,11 @@ export default function AdminBookingsPage() {
         headers={[
           { key: "booking_number", label: "Booking #" },
           { key: "customer", label: "Customer" },
+          { key: "address", label: "Drop-Off Address" },
           { key: "size", label: "Size" },
           { key: "delivery", label: "Delivery Date" },
           { key: "total", label: "Total" },
+          { key: "notes", label: "Placement Notes" },
           { key: "status", label: "Status" },
         ]}
         rows={rows}

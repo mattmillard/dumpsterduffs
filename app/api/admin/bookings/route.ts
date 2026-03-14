@@ -7,18 +7,42 @@ import {
 
 export async function GET() {
   try {
-    const { data, error } = await supabaseAdmin
+    const structuredQuery = await supabaseAdmin
       .from("bookings")
       .select(
-        "id, customer_name, customer_phone, size_yards, delivery_date, return_date, total_price, status, created_at",
+        "id, customer_name, customer_email, customer_phone, customer_company, size_yards, delivery_date, return_date, total_price, subtotal, delivery_fee, tax, status, payment_status, delivery_address_line_1, delivery_address_line_2, delivery_city, delivery_state, delivery_zip, placement_notes, created_at",
       )
       .order("created_at", { ascending: false });
 
-    if (error) {
-      throw error;
+    if (!structuredQuery.error) {
+      return NextResponse.json(structuredQuery.data || []);
     }
 
-    return NextResponse.json(data || []);
+    const legacyQuery = await supabaseAdmin
+      .from("bookings")
+      .select(
+        "id, customer_name, customer_email, customer_phone, customer_company, size_yards, delivery_date, return_date, total_price, status, payment_status, delivery_address, notes, created_at",
+      )
+      .order("created_at", { ascending: false });
+
+    if (legacyQuery.error) {
+      throw legacyQuery.error;
+    }
+
+    const normalized = (legacyQuery.data || []).map((booking) => ({
+      ...booking,
+      subtotal: null,
+      delivery_fee: null,
+      tax: null,
+      delivery_address_line_1: booking.delivery_address || null,
+      delivery_address_line_2: null,
+      delivery_city: null,
+      delivery_state: null,
+      delivery_zip: null,
+      placement_notes: booking.notes || null,
+    }));
+
+    return NextResponse.json(normalized);
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to load bookings" },

@@ -22,6 +22,8 @@ type CreateBookingPayload = {
   delivery_city: string;
   delivery_state: string;
   delivery_zip: string;
+  delivery_lat?: number;
+  delivery_lng?: number;
 
   // Customer info
   customer_full_name: string;
@@ -107,30 +109,66 @@ export async function POST(request: Request) {
       : "";
     const fullAddress = `${payload.delivery_address_line_1}${addressLine2}, ${payload.delivery_city}, ${payload.delivery_state} ${payload.delivery_zip}`;
 
-    const bookingRecord = {
+    const structuredBookingRecord = {
       customer_name: payload.customer_full_name,
       customer_email: payload.customer_email,
       customer_phone: payload.customer_phone,
+      customer_company: payload.customer_company || null,
       size_yards: payload.size_yards,
-      delivery_address: fullAddress,
       delivery_date: payload.delivery_date,
       return_date: payload.pickup_date,
+      delivery_address_line_1: payload.delivery_address_line_1,
+      delivery_address_line_2: payload.delivery_address_line_2 || null,
+      delivery_city: payload.delivery_city,
+      delivery_state: payload.delivery_state,
+      delivery_zip: payload.delivery_zip,
+      placement_notes: payload.placement_notes || null,
+      subtotal: payload.subtotal,
+      delivery_fee: payload.delivery_fee,
+      tax: payload.tax,
       total_price: payload.total,
       status: "pending",
       payment_status: "pending",
-      notes: payload.placement_notes || null,
     };
 
-    // Insert booking into database
-    const { data, error } = await supabaseAdmin
+    // Try structured schema first, then gracefully fall back to legacy schema.
+    let insertResult = await supabaseAdmin
       .from("bookings")
-      .insert([bookingRecord])
+      .insert([structuredBookingRecord])
       .select("id")
       .single();
 
+    if (insertResult.error) {
+      const legacyBookingRecord = {
+        customer_name: payload.customer_full_name,
+        customer_email: payload.customer_email,
+        customer_phone: payload.customer_phone,
+        customer_company: payload.customer_company || null,
+        size_yards: payload.size_yards,
+        delivery_address: fullAddress,
+        delivery_date: payload.delivery_date,
+        return_date: payload.pickup_date,
+        total_price: payload.total,
+        status: "pending",
+        payment_status: "pending",
+        notes: payload.placement_notes || null,
+      };
+
+      insertResult = await supabaseAdmin
+        .from("bookings")
+        .insert([legacyBookingRecord])
+        .select("id")
+        .single();
+    }
+
+    const { data, error } = insertResult;
+
     if (error) {
       console.error("Booking insert error:", JSON.stringify(error, null, 2));
-      console.error("Booking record:", JSON.stringify(bookingRecord, null, 2));
+      console.error(
+        "Structured booking record:",
+        JSON.stringify(structuredBookingRecord, null, 2),
+      );
       return NextResponse.json(
         { error: "Failed to create booking. Please try again." },
         { status: 500 },
