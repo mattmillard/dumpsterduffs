@@ -61,7 +61,6 @@ export default async function SizeOverview() {
                   <p className="text-4xl font-bold text-primary">
                     {dumpsterInfo.price}
                   </p>
-                  <p className="text-sm text-[#808080] mt-1">7-day rental</p>
                 </div>
               </div>
 
