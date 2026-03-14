@@ -1,28 +1,28 @@
 export default function SocialProof() {
   const reviews = [
     {
-      name: "Mike Thompson",
-      project: "Kitchen Renovation",
+      name: "Jamie Lynn",
+      project: "Facebook Review",
       rating: 5,
-      text: "Called Duff on a Thursday, had the dumpster delivered Friday morning. Fast, professional, and the price was exactly what they quoted. Would definitely use them again.",
-      date: "Feb 2026",
-      avatar: "MT",
+      text: "Great communication. Quick pick up and drop off. Great price! I know it is a little silly but I also loved how CLEAN they were. Obviously well taken care of!",
+      date: "Jan 21",
+      avatar: "JL",
     },
     {
-      name: "Sarah Jenkins",
-      project: "Garage Cleanout",
+      name: "Courtney Ann Thompson",
+      project: "Facebook Review",
       rating: 5,
-      text: "The team was super helpful. They even moved the dumpster to a better spot when I realized the first location wasn't ideal. Great local service!",
-      date: "Jan 2026",
-      avatar: "SJ",
+      text: "Cleaned out around 18yrs of junk from our attic. So much appreciate Dumpster Duff getting us a dumpster so quickly and for such a fair price! Highly recommend!",
+      date: "Jan 1",
+      avatar: "CT",
     },
     {
-      name: "Tom Rodriguez",
-      project: "Roofing Job",
+      name: "John Berkbuegler",
+      project: "Facebook Review",
       rating: 5,
-      text: "I'm a contractor and use several dumpster services. Dumpster Duff's is by far the most reliable. On-time delivery every single time. Highly recommend for pros.",
-      date: "Jan 2026",
-      avatar: "TR",
+      text: "They were prompt and courteous. Offered viable solutions for my junk removal! Easy and great to work with! Dustin is too notch and follows through with what he commits too. Highly recommend!!!!!",
+      date: "Dec 27, 2025",
+      avatar: "JB",
     },
   ];
 
@@ -99,18 +99,23 @@ export default function SocialProof() {
           ))}
         </div>
 
-        {/* Google Reviews Link */}
+        {/* Facebook Reviews Link */}
         <div className="text-center">
           <a
-            href="https://www.google.com/search?q=dumpster+duffs"
+            href="https://www.facebook.com/people/Dumpster-Duffs/61574110268935/?sk=reviews"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-primary hover:text-primary-light font-semibold transition-colors"
           >
-            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z" />
+            <svg
+              className="w-6 h-6"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M13.5 8H16V5h-2.5C10.462 5 8 7.462 8 10.5V13H6v3h2v5h3v-5h2.5l.5-3H11v-2.5C11 9.672 11.672 9 12.5 9h1z" />
             </svg>
-            Read all reviews on Google
+            Read all reviews on Facebook
             <svg
               className="w-5 h-5"
               fill="none"
