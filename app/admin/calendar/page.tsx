@@ -113,7 +113,20 @@ export default function AdminCalendarPage() {
         throw new Error("Calendar payload was invalid.");
       }
 
-      setSnapshot(data);
+      setSnapshot({
+        month: data.month || month,
+        monthStart: data.monthStart || `${month}-01`,
+        monthEnd: data.monthEnd || `${month}-31`,
+        setupRequired: Boolean(data.setupRequired),
+        setupMessage: data.setupMessage,
+        days: data.days,
+        bookings: data.bookings,
+        internalReservations: Array.isArray(data.internalReservations)
+          ? data.internalReservations
+          : [],
+        blockedDates: data.blockedDates,
+        blacklist: data.blacklist,
+      });
     } catch (error) {
       setLoadError(
         error instanceof Error
@@ -365,7 +378,10 @@ export default function AdminCalendarPage() {
             Calendar Unavailable
           </h2>
           <p className="text-white mb-4">{loadError}</p>
-          <AdminButton variant="secondary" onClick={() => loadCalendar(currentMonth)}>
+          <AdminButton
+            variant="secondary"
+            onClick={() => loadCalendar(currentMonth)}
+          >
             Retry
           </AdminButton>
         </div>

@@ -2,6 +2,18 @@ import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { getInventoryConfig } from "@/lib/admin/config";
 
+type DashboardBookingRow = {
+  id: string;
+  customer_name: string;
+  size_yards: number;
+  delivery_date: string;
+  return_date: string;
+  total_price: number | null;
+  status: string;
+  payment_status: string | null;
+  created_at: string;
+};
+
 export async function GET() {
   try {
     const today = new Date();
@@ -31,7 +43,7 @@ export async function GET() {
       throw error;
     }
 
-    const bookings = allBookings || [];
+    const bookings = (allBookings || []) as DashboardBookingRow[];
 
     const bookingsToday = bookings.filter(
       (booking) => booking.delivery_date === startOfToday,

@@ -1,6 +1,38 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 
+export const dynamic = "force-dynamic";
+
+type ConversionRow = {
+  converted: boolean | null;
+  called: boolean | null;
+};
+
+type PageEventRow = {
+  page_path: string | null;
+};
+
+type SessionAttributionRow = {
+  referrer: string | null;
+  utm_source: string | null;
+  utm_medium: string | null;
+  utm_campaign: string | null;
+};
+
+type DeviceRow = {
+  device_type: string | null;
+};
+
+type FormEventRow = {
+  event_type: string;
+  event_data: unknown;
+};
+
+type DailyStatRow = {
+  page_views: number | null;
+  phone_clicks: number | null;
+};
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -29,8 +61,11 @@ export async function GET(request: Request) {
       .select("converted, called")
       .gte("first_seen", startDate.toISOString());
 
-    const conversions = conversionStats?.filter((s) => s.converted).length || 0;
-    const phoneCalls = conversionStats?.filter((s) => s.called).length || 0;
+    const conversionRows = (conversionStats || []) as ConversionRow[];
+    const conversions = conversionRows.filter((s) =>
+      Boolean(s.converted),
+    ).length;
+    const phoneCalls = conversionRows.filter((s) => Boolean(s.called)).length;
 
     // Get top pages
     const { data: topPages } = await supabaseAdmin
@@ -40,7 +75,8 @@ export async function GET(request: Request) {
       .gte("created_at", startDate.toISOString());
 
     const pageViews: Record<string, number> = {};
-    topPages?.forEach((event) => {
+    ((topPages || []) as PageEventRow[]).forEach((event) => {
+      if (!event.page_path) return;
       pageViews[event.page_path] = (pageViews[event.page_path] || 0) + 1;
     });
 
@@ -56,14 +92,15 @@ export async function GET(request: Request) {
       .gte("first_seen", startDate.toISOString());
 
     const referrerSources: Record<string, number> = {};
-    sessions?.forEach((session) => {
+    ((sessions || []) as SessionAttributionRow[]).forEach((session) => {
       if (session.utm_source) {
         const key = `${session.utm_source} / ${session.utm_medium || "none"}`;
         referrerSources[key] = (referrerSources[key] || 0) + 1;
       } else if (session.referrer) {
         try {
           const url = new URL(session.referrer);
-          referrerSources[url.hostname] = (referrerSources[url.hostname] || 0) + 1;
+          referrerSources[url.hostname] =
+            (referrerSources[url.hostname] || 0) + 1;
         } catch {
           referrerSources["Unknown"] = (referrerSources["Unknown"] || 0) + 1;
         }
@@ -84,7 +121,7 @@ export async function GET(request: Request) {
       .gte("first_seen", startDate.toISOString());
 
     const devices: Record<string, number> = {};
-    deviceData?.forEach((session) => {
+    ((deviceData || []) as DeviceRow[]).forEach((session) => {
       if (session.device_type) {
         devices[session.device_type] = (devices[session.device_type] || 0) + 1;
       }
@@ -102,13 +139,26 @@ export async function GET(request: Request) {
       .in("event_type", ["form_start", "form_step", "form_complete"])
       .gte("created_at", startDate.toISOString());
 
-    const formStarts = formEvents?.filter((e) => e.event_type === "form_start").length || 0;
-    const formCompletes = formEvents?.filter((e) => e.event_type === "form_complete").length || 0;
-    const conversionRate = formStarts > 0 ? ((formCompletes / formStarts) * 100).toFixed(1) : "0.0";
+    const formRows = (formEvents || []) as FormEventRow[];
+    const formStarts = formRows.filter(
+      (e) => e.event_type === "form_start",
+    ).length;
+    const formCompletes = formRows.filter(
+      (e) => e.event_type === "form_complete",
+    ).length;
+    const conversionRate =
+      formStarts > 0 ? ((formCompletes / formStarts) * 100).toFixed(1) : "0.0";
 
     // Calculate summary metrics
-    const totalPageViews = dailyStats?.reduce((sum, day) => sum + (day.page_views || 0), 0) || 0;
-    const totalPhoneClicks = dailyStats?.reduce((sum, day) => sum + (day.phone_clicks || 0), 0) || 0;
+    const dailyRows = (dailyStats || []) as DailyStatRow[];
+    const totalPageViews = dailyRows.reduce(
+      (sum, day) => sum + (day.page_views || 0),
+      0,
+    );
+    const totalPhoneClicks = dailyRows.reduce(
+      (sum, day) => sum + (day.phone_clicks || 0),
+      0,
+    );
 
     return NextResponse.json({
       summary: {
@@ -129,7 +179,7 @@ export async function GET(request: Request) {
     console.error("Analytics fetch error:", error);
     return NextResponse.json(
       { error: "Failed to fetch analytics" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -1,4 +1,5 @@
 // Authentication utilities for admin section
+import { AuthChangeEvent } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase/client";
 import { AdminUser, AdminRole } from "@/types/admin";
 
@@ -16,7 +17,10 @@ async function fetchAdminByUserId(userId: string): Promise<AdminUser | null> {
     return null;
   }
 
-  if (!admin.is_active || !["admin", "owner", "dispatcher"].includes(admin.role)) {
+  if (
+    !admin.is_active ||
+    !["admin", "owner", "dispatcher"].includes(admin.role)
+  ) {
     return null;
   }
 
@@ -171,7 +175,7 @@ export async function adminLogout(): Promise<{
 export function onAuthStateChange(callback: (user: AdminUser | null) => void) {
   const {
     data: { subscription },
-  } = supabase.auth.onAuthStateChange(async (event) => {
+  } = supabase.auth.onAuthStateChange(async (event: AuthChangeEvent) => {
     if (event === "SIGNED_OUT") {
       callback(null);
       return;
