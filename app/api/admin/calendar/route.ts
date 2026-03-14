@@ -50,6 +50,7 @@ type CalendarActionPayload =
       size_yards: number;
       start_date: string;
       pickup_date: string;
+      pickup_time_slot?: "AM" | "PM";
       notes?: string;
     }
   | {
