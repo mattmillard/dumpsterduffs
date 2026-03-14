@@ -15,7 +15,7 @@ type ExistingBookingRow = {
 
 export async function GET() {
   try {
-    // Try structured schema first (all address fields)
+    // Try structured schema first (all address fields, return_date)
     const structuredQuery = await supabaseAdmin
       .from("bookings")
       .select(
@@ -27,22 +27,20 @@ export async function GET() {
       return NextResponse.json(structuredQuery.data || []);
     }
 
-    // Try legacy schema (single delivery_address field)
-    const legacyQuery = await supabaseAdmin
+    // Try legacy schema with return_date (single delivery_address field)
+    const legacyReturnDateQuery = await supabaseAdmin
       .from("bookings")
       .select(
-        "id, customer_name, customer_email, customer_phone, size_yards, delivery_date, return_date, pickup_date, total_price, status, payment_status, delivery_address, notes, created_at",
+        "id, customer_name, customer_email, customer_phone, size_yards, delivery_date, return_date, total_price, status, payment_status, delivery_address, notes, created_at",
       )
       .order("created_at", { ascending: false });
 
-    if (!legacyQuery.error) {
-      const legacyRows = (legacyQuery.data || []) as Array<
+    if (!legacyReturnDateQuery.error) {
+      const legacyRows = (legacyReturnDateQuery.data || []) as Array<
         Record<string, unknown>
       >;
       const normalized = legacyRows.map((booking) => ({
         ...booking,
-        // Use return_date if present, otherwise pickup_date
-        return_date: booking.return_date || booking.pickup_date || null,
         subtotal: null,
         delivery_fee: null,
         tax: null,
@@ -58,15 +56,46 @@ export async function GET() {
       return NextResponse.json(normalized);
     }
 
-    // Minimal fallback - try with just pickup_date (no return_date)
+    // Try legacy schema with pickup_date instead of return_date
+    const legacyPickupDateQuery = await supabaseAdmin
+      .from("bookings")
+      .select(
+        "id, customer_name, customer_email, customer_phone, size_yards, delivery_date, pickup_date, total_price, status, payment_status, delivery_address, notes, created_at",
+      )
+      .order("created_at", { ascending: false });
+
+    if (!legacyPickupDateQuery.error) {
+      const legacyRows = (legacyPickupDateQuery.data || []) as Array<
+        Record<string, unknown>
+      >;
+      const normalized = legacyRows.map((booking) => ({
+        ...booking,
+        return_date: booking.pickup_date || null,
+        subtotal: null,
+        delivery_fee: null,
+        tax: null,
+        delivery_address_line_1:
+          (booking.delivery_address as string | null) || null,
+        delivery_address_line_2: null,
+        delivery_city: null,
+        delivery_state: null,
+        delivery_zip: null,
+        placement_notes: (booking.notes as string | null) || null,
+      }));
+
+      return NextResponse.json(normalized);
+    }
+
+    // Minimal fallback - absolute bare minimum fields
     const minimalQuery = await supabaseAdmin
       .from("bookings")
       .select(
-        "id, customer_name, customer_phone, customer_email, size_yards, delivery_date, pickup_date, total_price, status, delivery_address, notes, created_at",
+        "id, customer_name, customer_phone, size_yards, delivery_date, total_price, status, created_at",
       )
       .order("created_at", { ascending: false });
 
     if (minimalQuery.error) {
+      console.error("All booking queries failed. Last error:", minimalQuery.error);
       throw minimalQuery.error;
     }
 
@@ -75,22 +104,23 @@ export async function GET() {
     >;
     const minimalNormalized = minimalRows.map((booking) => ({
       ...booking,
-      return_date: booking.pickup_date || null,
+      customer_email: null,
+      return_date: null,
       payment_status: null,
       subtotal: null,
       delivery_fee: null,
       tax: null,
-      delivery_address_line_1:
-        (booking.delivery_address as string | null) || null,
+      delivery_address_line_1: null,
       delivery_address_line_2: null,
       delivery_city: null,
       delivery_state: null,
       delivery_zip: null,
-      placement_notes: (booking.notes as string | null) || null,
+      placement_notes: null,
     }));
 
     return NextResponse.json(minimalNormalized);
   } catch (error) {
+    console.error("Bookings GET error:", error);
     return NextResponse.json(
       { error: "Failed to load bookings" },
       { status: 500 },
