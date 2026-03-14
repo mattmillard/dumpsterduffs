@@ -109,13 +109,20 @@ export async function POST(request: Request) {
       : "";
     const fullAddress = `${payload.delivery_address_line_1}${addressLine2}, ${payload.delivery_city}, ${payload.delivery_state} ${payload.delivery_zip}`;
 
-    const structuredBookingRecord = {
+    const baseBookingFields = {
       customer_name: payload.customer_full_name,
       customer_email: payload.customer_email,
       customer_phone: payload.customer_phone,
       customer_company: payload.customer_company || null,
       size_yards: payload.size_yards,
       delivery_date: payload.delivery_date,
+      total_price: payload.total,
+      status: "pending",
+      payment_status: "pending",
+    };
+
+    const structuredBookingRecord = {
+      ...baseBookingFields,
       return_date: payload.pickup_date,
       delivery_address_line_1: payload.delivery_address_line_1,
       delivery_address_line_2: payload.delivery_address_line_2 || null,
@@ -126,56 +133,108 @@ export async function POST(request: Request) {
       subtotal: payload.subtotal,
       delivery_fee: payload.delivery_fee,
       tax: payload.tax,
-      total_price: payload.total,
-      status: "pending",
-      payment_status: "pending",
     };
 
-    // Try structured schema first, then gracefully fall back to legacy schema.
-    let insertResult = await supabaseAdmin
-      .from("bookings")
-      .insert([structuredBookingRecord])
-      .select("id")
-      .single();
+    // pickup_date variant: structured fields but uses pickup_date instead of return_date
+    // Important: must NOT include return_date so the insert doesn't fail if that column is absent
+    const structuredPickupDateRecord: Record<string, unknown> = {
+      ...baseBookingFields,
+      pickup_date: payload.pickup_date,
+      delivery_address_line_1: payload.delivery_address_line_1,
+      delivery_address_line_2: payload.delivery_address_line_2 || null,
+      delivery_city: payload.delivery_city,
+      delivery_state: payload.delivery_state,
+      delivery_zip: payload.delivery_zip,
+      placement_notes: payload.placement_notes || null,
+      subtotal: payload.subtotal,
+      delivery_fee: payload.delivery_fee,
+      tax: payload.tax,
+    };
 
-    if (insertResult.error) {
-      const legacyBookingRecord = {
-        customer_name: payload.customer_full_name,
-        customer_email: payload.customer_email,
-        customer_phone: payload.customer_phone,
-        customer_company: payload.customer_company || null,
-        size_yards: payload.size_yards,
-        delivery_address: fullAddress,
-        delivery_date: payload.delivery_date,
-        return_date: payload.pickup_date,
-        total_price: payload.total,
-        status: "pending",
-        payment_status: "pending",
-        notes: payload.placement_notes || null,
-      };
+    const legacyBookingRecord = {
+      ...baseBookingFields,
+      delivery_address: fullAddress,
+      return_date: payload.pickup_date,
+      notes: payload.placement_notes || null,
+    };
 
-      insertResult = await supabaseAdmin
+    // pickup_date variant: legacy fields but uses pickup_date instead of return_date
+    // Important: must NOT include return_date
+    const legacyPickupDateRecord: Record<string, unknown> = {
+      ...baseBookingFields,
+      delivery_address: fullAddress,
+      pickup_date: payload.pickup_date,
+      notes: payload.placement_notes || null,
+    };
+
+    const insertAttempts: Array<{
+      label: string;
+      record: Record<string, unknown>;
+    }> = [
+      { label: "structured_return_date", record: structuredBookingRecord },
+      { label: "structured_pickup_date", record: structuredPickupDateRecord },
+      { label: "legacy_return_date", record: legacyBookingRecord },
+      { label: "legacy_pickup_date", record: legacyPickupDateRecord },
+    ];
+
+    let bookingId: string | null = null;
+    const insertErrors: Array<{
+      label: string;
+      code?: string;
+      message?: string;
+      details?: string;
+    }> = [];
+
+    for (const attempt of insertAttempts) {
+      const attemptResult = await supabaseAdmin
         .from("bookings")
-        .insert([legacyBookingRecord])
+        .insert([attempt.record])
         .select("id")
         .single();
+
+      if (!attemptResult.error && attemptResult.data?.id) {
+        bookingId = String(attemptResult.data.id);
+        break;
+      }
+
+      const maybeError = attemptResult.error as {
+        code?: string;
+        message?: string;
+        details?: string;
+      } | null;
+
+      insertErrors.push({
+        label: attempt.label,
+        code: maybeError?.code,
+        message: maybeError?.message,
+        details: maybeError?.details,
+      });
     }
 
-    const { data, error } = insertResult;
-
-    if (error) {
-      console.error("Booking insert error:", JSON.stringify(error, null, 2));
+    if (!bookingId) {
       console.error(
-        "Structured booking record:",
-        JSON.stringify(structuredBookingRecord, null, 2),
+        "Booking insert attempts failed:",
+        JSON.stringify(insertErrors, null, 2),
       );
+      const firstError = insertErrors[0];
+      const lastError = insertErrors[insertErrors.length - 1];
+      const errorMessage =
+        firstError?.message ||
+        firstError?.details ||
+        lastError?.message ||
+        lastError?.details ||
+        "Failed to create booking. Please contact support or try again.";
+
       return NextResponse.json(
-        { error: "Failed to create booking. Please try again." },
+        {
+          error: errorMessage,
+          reason: "booking_insert_failed",
+          debug: insertErrors,
+        },
         { status: 500 },
       );
     }
 
-    const bookingId = data.id;
     const bookingNumber = bookingId.slice(0, 8).toUpperCase();
 
     // Try to send confirmation emails (optional - skip if env vars missing)
@@ -573,9 +632,19 @@ Dumpster Duff's Admin System
     });
   } catch (error) {
     console.error("Booking creation error:", error);
-    return NextResponse.json(
-      { error: "Error processing checkout. Please try again." },
-      { status: 500 },
-    );
+
+    const maybeError = error as {
+      message?: string;
+      details?: string;
+      hint?: string;
+    };
+
+    const errorMessage =
+      maybeError?.message ||
+      maybeError?.details ||
+      maybeError?.hint ||
+      "Error processing checkout. Please try again.";
+
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

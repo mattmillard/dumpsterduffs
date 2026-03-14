@@ -152,8 +152,13 @@ export function normalizeBlacklistValue(type: string, value: string): string {
 
 function isMissingTableError(error: unknown): boolean {
   if (!error || typeof error !== "object") return false;
-  const maybeError = error as { code?: string; message?: string; details?: string };
-  const message = `${maybeError.message || ""} ${maybeError.details || ""}`.toLowerCase();
+  const maybeError = error as {
+    code?: string;
+    message?: string;
+    details?: string;
+  };
+  const message =
+    `${maybeError.message || ""} ${maybeError.details || ""}`.toLowerCase();
 
   return (
     maybeError.code === "42P01" ||
@@ -214,7 +219,40 @@ async function fetchBookingsForRange(start: string, end: string) {
     .gte("return_date", start)
     .order("delivery_date", { ascending: true });
 
-  if (error) throw error;
+  if (!error) return (data || []) as BookingRecord[];
+
+  // Fallback: if return_date column doesn't exist, try pickup_date column name
+  if (isMissingTableError(error) || (error as { code?: string }).code === "42703") {
+    const fallback = await supabaseAdmin
+      .from("bookings")
+      .select(
+        "id, customer_name, customer_phone, customer_email, delivery_date, pickup_date, size_yards, status, total_price",
+      )
+      .lte("delivery_date", end)
+      .gte("pickup_date", start)
+      .order("delivery_date", { ascending: true });
+
+    if (fallback.error) {
+      if (isMissingTableError(fallback.error)) return [] as BookingRecord[];
+      throw fallback.error;
+    }
+
+    return ((fallback.data || []) as Array<Record<string, unknown>>).map(
+      (row) => ({
+        id: String(row.id || ""),
+        customer_name: String(row.customer_name || ""),
+        customer_phone: String(row.customer_phone || ""),
+        customer_email: String(row.customer_email || ""),
+        delivery_date: String(row.delivery_date || ""),
+        return_date: String(row.pickup_date || row.return_date || ""),
+        size_yards: Number(row.size_yards || 0),
+        status: String(row.status || ""),
+        total_price: Number(row.total_price || 0),
+      }),
+    ) as BookingRecord[];
+  }
+
+  throw error;
   return (data || []) as BookingRecord[];
 }
 
