@@ -260,6 +260,25 @@ export default function AdminSettingsPage() {
 			</section>
 
 			<section className="bg-[#1A1A1A] border border-[#404040] rounded-lg p-6 space-y-4">
+				<div id="account" className="scroll-mt-24">
+					<h2 className="text-2xl font-bold text-white">Account</h2>
+					<p className="text-[#999999] text-sm mt-1">Manage your current admin session</p>
+				</div>
+
+				<div className="bg-[#121212] border border-[#303030] rounded-md p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+					<div>
+						<p className="text-white font-medium">Sign out of Admin</p>
+						<p className="text-[#999999] text-sm">Ends your current session on this device</p>
+					</div>
+					<button
+						onClick={handleSignOut}
+						className="px-4 py-2 rounded-md bg-red-500/10 text-red-300 border border-red-500/40 hover:bg-red-500/20 sm:w-auto w-full">
+						Log Out
+					</button>
+				</div>
+			</section>
+
+			<section className="bg-[#1A1A1A] border border-[#404040] rounded-lg p-6 space-y-4">
 				<div>
 					<h2 className="text-2xl font-bold text-white">System Health</h2>
 					<p className="text-[#999999] text-sm mt-1">Quick environment checks to catch deployment misconfiguration</p>
